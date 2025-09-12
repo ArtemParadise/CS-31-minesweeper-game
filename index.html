@@ -5,19 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minesweeper Game</title>
     <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
 </head>
 <body>
     <h1>Minesweeper Game</h1>
     <div class="game-board-wrapper">
-        <div class="game-board-header">
-            <div class="game-board-score">007</div>
-            <button class="game-board-button">start</button>
-            <div class="game-board-timer">000</div>
-        </div>
-        <div class="game-board">
-            <div class="game-board-cell"></div>
+        <header class="game-board-header">
+            <div class="game-board-header__flags_left">007</div>
+            <button class="start-button">Start</button>
+            <div class="game-board-header__timer">00:00</div>
+        </header>
+        <div>
+            <div class="game-board-wrapper__row">
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell open-cell"></div>
+                <div class="game-board__cell open-cell number-1">1</div>
+                <div class="game-board__cell open-cell number-2">2</div>
+                <div class="game-board__cell open-cell number-3">3</div>
+                <div class="game-board__cell flagged-cell"></div>
+                <div class="game-board__cell mine-cell"></div>
+                <div class="game-board__cell mine-cell"></div>
+            </div>
+            <div class="game-board-wrapper__row">
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell open-cell number-1">1</div>
+                <div class="game-board__cell open-cell"></div>
+                <div class="game-board__cell open-cell number-2">2</div>
+                <div class="game-board__cell mine-cell"></div>
+                <div class="game-board__cell flagged-cell"></div>
+                <div class="game-board__cell open-cell number-3">3</div>
+                <div class="game-board__cell mine-cell"></div>
+            </div>
+            <div class="game-board-wrapper__row">
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell open-cell number-1">1</div>
+                <div class="game-board__cell open-cell"></div>
+                <div class="game-board__cell open-cell number-2">2</div>
+                <div class="game-board__cell mine-cell"></div>
+                <div class="game-board__cell flagged-cell"></div>
+                <div class="game-board__cell open-cell number-3">3</div>
+                <div class="game-board__cell mine-cell"></div>
+            </div>
+            <div class="game-board-wrapper__row">
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell closed-cell"></div>
+                <div class="game-board__cell open-cell number-1">1</div>
+                <div class="game-board__cell open-cell"></div>
+                <div class="game-board__cell open-cell number-2">2</div>
+                <div class="game-board__cell mine-cell"></div>
+                <div class="game-board__cell flagged-cell"></div>
+                <div class="game-board__cell open-cell number-3">3</div>
+                <div class="game-board__cell mine-cell"></div>
+            </div>
         </div>
     </div>
+
+    <!-- <div id="game-board">
+        hello
+    </div> -->
+    <!-- <script src="script.js"></script> -->
 </body>
 </html>
