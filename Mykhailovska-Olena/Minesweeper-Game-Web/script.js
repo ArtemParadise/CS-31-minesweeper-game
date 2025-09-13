@@ -11,3 +11,29 @@ updateBackgroundGradient();
 
 // Update when the slider value changes
 scaleSlider.addEventListener('input', updateBackgroundGradient);
+
+
+const selectBtn = document.querySelector('.select-btn');
+const options = document.querySelector('.options');
+const selected = document.querySelector('.selected');
+const optionItems = document.querySelectorAll('.options li');
+
+selectBtn.addEventListener('click', () => {
+  options.style.display = options.style.display === 'block' ? 'none' : 'block';
+});
+
+optionItems.forEach(option => {
+  option.addEventListener('click', () => {
+    optionItems.forEach(o => o.classList.remove('active'));
+    option.classList.add('active');
+    selected.textContent = option.textContent;
+    options.style.display = 'none';
+  });
+});
+
+// Чтобы закрывать меню, если клик вне селекта
+document.addEventListener('click', (e) => {
+  if (!document.querySelector('.difficulty-select').contains(e.target)) {
+    options.style.display = 'none';
+  }
+});

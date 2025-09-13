@@ -47,6 +47,7 @@ body {
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    margin-bottom: 20px;
   }
   
   .btn-icon {
@@ -59,10 +60,79 @@ body {
 
 /* Родительский контейнер */
 div.parent {
-  display: flex;
-  justify-content: center; /* по центру горизонтально */
-  gap: 20px;               /* расстояние между блоками */
+  display: flex;              /* делаем все в ряд */
+  justify-content: center;    /* по центру горизонтально */
+  align-items: center;        /* по центру вертикально */
+  gap: 20px;                  /* расстояние между блоками */
 }
+
+/* Селект со сложностями */
+.difficulty-select {
+  position: relative;
+  width: 120px;
+}
+
+.select-btn {
+  width: 100%;
+  background: #F3F3F5;
+  border: none;
+  padding: 8px 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+}
+
+.select-btn .arrow img {
+  width: px;
+  height: auto;
+}
+
+.options {
+  color: #000000;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #FFFFFF;
+  border-radius: 6px;
+  margin: 4px 0 0 0;
+  padding: 0;
+  list-style: none;
+  display: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.options li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.options li:hover {
+  background: #E9EBEF;
+  border-radius: 6px;
+}
+
+.options li.active {
+  background: #E9EBEF;
+  border-radius: 6px;
+}
+
+
+/* Кнопка Reveal Safe */
+.parent > div:last-child button {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: none;
+  background: #030213;
+  color: #fff;
+  cursor: pointer;
+}
+
+
 
 /* Если нужно, чтобы кнопка и слайдер были чуть красивее */
 .scale {
