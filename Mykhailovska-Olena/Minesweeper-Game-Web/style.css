@@ -1,10 +1,106 @@
+:root {
+  --slider-size: 15px;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background: #222;
+    background: #F4F7FA;
     color: #eee;
     text-align: center;
   }
+
+  .title {
+    margin-top: 50px;
+    font-size: 24px;
+    font-weight: 800;
+    color: #1D293D;
+    text-align: center;
+  }
+
+  .time {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    justify-content: center; /* центрируем содержимое блока */
+    margin-bottom: 20px;
+  }
   
+  .time img {
+    width: 20px;
+    height: auto;
+  }
+
+  .time-text {
+    font-size: 16px;
+    font-weight: 500;
+    color: #2E6EFB;
+  }
+
+  .new-game button {
+    text-align: center;
+    gap: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 400;
+    background-color: #030213;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .btn-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .btn-text {
+  }
+
+/* Родительский контейнер */
+div.parent {
+  display: flex;
+  justify-content: center; /* по центру горизонтально */
+  gap: 20px;               /* расстояние между блоками */
+}
+
+/* Если нужно, чтобы кнопка и слайдер были чуть красивее */
+.scale {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Слайдер как у тебя */
+.slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: var(--slider-size, 16px);
+  background: linear-gradient(to right, black 50%, white 50%);
+  outline: none;
+  border-radius: 16px;
+  transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  background: #ffffff;
+  border-radius: 50%;
+  border: 1px solid #000000;
+  cursor: pointer;
+  width: var(--slider-size, 16px);
+  height: var(--slider-size, 16px);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.slider::-webkit-slider-thumb:active,
+.slider::-webkit-slider-thumb:focus {
+  box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.7);
+}
+
+
+  
+
   .game-wrapper {
     display: flex;
     justify-content: center;
@@ -71,4 +167,3 @@ body {
     font-size: 14px;
     line-height: 1.5;
   }
-  
