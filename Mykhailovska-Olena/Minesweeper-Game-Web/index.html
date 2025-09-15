@@ -36,20 +36,23 @@
           </ul>
         </div>
       
-        <div class="scale">
-          <label for="scale">
-            <img src="photos/si_zoom-in-line.svg" alt="icon" class="btn-icon">
-          </label>
-          <input
-            class="slider"
-            type="range"
-            id="scale"
-            name="scale"
-            min="1"
-            max="10"
-            value="5"
-          />
-        </div>
+        <div class="scale-section">
+          <div class="scale">
+            <label for="scale">
+              <img src="photos/si_zoom-in-line.svg" alt="icon" class="btn-icon">
+            </label>
+            <input
+              class="slider"
+              type="range"
+              id="scale"
+              name="scale"
+              min="1"
+              max="10"
+              value="5"
+            />
+          </div>
+          <span>100%</span>
+      </div>
       
         <div>
           <button>Reveal Safe</button>
@@ -57,123 +60,127 @@
       </div>
       
       
-      <div>
+      <div class="indicators">
         <div>💣 3</div>
         <div>🥳 Streak: 64</div>
       </div>
 
       <!-- САМО ПОЛЕ -->
       <div class="game-wrapper">
-        <div class="board" aria-hidden="true">
-          <!-- Ряд 1 -->
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell num1">1</div>
-          <div class="cell num2">2</div>
-          <div class="cell num3">3</div>
-          <div class="cell"></div>
-          <div class="cell flag">🚩</div>
-          <div class="cell bomb">💣</div>
-          <div class="cell open"></div>
-
-          <!-- Ряд 2 -->
-          <div class="cell"></div>
-          <div class="cell num1">1</div>
-          <div class="cell open"></div>
-          <div class="cell num4">4</div>
-          <div class="cell num2">2</div>
-          <div class="cell num1">1</div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-
-          <!-- Ряд 3 -->
-          <div class="cell num2">2</div>
-          <div class="cell num3">3</div>
-          <div class="cell"></div>
-          <div class="cell flag">🚩</div>
-          <div class="cell"></div>
-          <div class="cell bomb">💣</div>
-          <div class="cell num1">1</div>
-          <div class="cell open"></div>
-          <div class="cell"></div>
-
-          <!-- Ряд 4 -->
-          <div class="cell open"></div>
-          <div class="cell open"></div>
-          <div class="cell num1">1</div>
-          <div class="cell num2">2</div>
-          <div class="cell num3">3</div>
-          <div class="cell num4">4</div>
-          <div class="cell num5">5</div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-
-          <!-- Ряд 5 -->
-          <div class="cell"></div>
-          <div class="cell flag">🚩</div>
-          <div class="cell"></div>
-          <div class="cell bomb">💣</div>
-          <div class="cell"></div>
-          <div class="cell num6">6</div>
-          <div class="cell num2">2</div>
-          <div class="cell num1">1</div>
-          <div class="cell open"></div>
-
-          <!-- Ряд 6 -->
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell num7">7</div>
-          <div class="cell num3">3</div>
-          <div class="cell num2">2</div>
-          <div class="cell"></div>
-          <div class="cell flag">🚩</div>
-          <div class="cell"></div>
-
-          <!-- Ряд 7 -->
-          <div class="cell bomb">💣</div>
-          <div class="cell"></div>
-          <div class="cell num1">1</div>
-          <div class="cell open"></div>
-          <div class="cell open"></div>
-          <div class="cell num4">4</div>
-          <div class="cell num2">2</div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-
-          <!-- Ряд 8 -->
-          <div class="cell"></div>
-          <div class="cell num5">5</div>
-          <div class="cell num6">6</div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell num8">8</div>
-          <div class="cell num1">1</div>
-          <div class="cell flag">🚩</div>
-
-          <!-- Ряд 9 -->
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
-          <div class="cell"></div>
+        <div class="outer-border">
+          <div class="inner-bg">
+            <div class="board" aria-hidden="true">
+              <!-- Ряд 1 -->
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell num1">1</div>
+              <div class="cell num2">2</div>
+              <div class="cell num3">3</div>
+              <div class="cell"></div>
+              <div class="cell flag">🚩</div>
+              <div class="cell bomb">💣</div>
+              <div class="cell open"></div>
+    
+              <!-- Ряд 2 -->
+              <div class="cell"></div>
+              <div class="cell num1">1</div>
+              <div class="cell open"></div>
+              <div class="cell num4">4</div>
+              <div class="cell num2">2</div>
+              <div class="cell num1">1</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+    
+              <!-- Ряд 3 -->
+              <div class="cell num2">2</div>
+              <div class="cell num3">3</div>
+              <div class="cell"></div>
+              <div class="cell flag">🚩</div>
+              <div class="cell"></div>
+              <div class="cell bomb">💣</div>
+              <div class="cell num1">1</div>
+              <div class="cell open"></div>
+              <div class="cell"></div>
+    
+              <!-- Ряд 4 -->
+              <div class="cell open"></div>
+              <div class="cell open"></div>
+              <div class="cell num1">1</div>
+              <div class="cell num2">2</div>
+              <div class="cell num3">3</div>
+              <div class="cell num4">4</div>
+              <div class="cell num5">5</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+    
+              <!-- Ряд 5 -->
+              <div class="cell"></div>
+              <div class="cell flag">🚩</div>
+              <div class="cell"></div>
+              <div class="cell bomb">💣</div>
+              <div class="cell"></div>
+              <div class="cell num6">6</div>
+              <div class="cell num2">2</div>
+              <div class="cell num1">1</div>
+              <div class="cell open"></div>
+    
+              <!-- Ряд 6 -->
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell num7">7</div>
+              <div class="cell num3">3</div>
+              <div class="cell num2">2</div>
+              <div class="cell"></div>
+              <div class="cell flag">🚩</div>
+              <div class="cell"></div>
+    
+              <!-- Ряд 7 -->
+              <div class="cell bomb">💣</div>
+              <div class="cell"></div>
+              <div class="cell num1">1</div>
+              <div class="cell open"></div>
+              <div class="cell open"></div>
+              <div class="cell num4">4</div>
+              <div class="cell num2">2</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+    
+              <!-- Ряд 8 -->
+              <div class="cell"></div>
+              <div class="cell num5">5</div>
+              <div class="cell num6">6</div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell num8">8</div>
+              <div class="cell num1">1</div>
+              <div class="cell flag">🚩</div>
+    
+              <!-- Ряд 9 -->
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+              <div class="cell"></div>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="controls">
-        <strong>Controls:</strong><br />
-        Left click to reveal • Right click to flag<br />
-        Hover + Spacebar to flag • Space on numbers to expand<br />
-        Reveal Safe: Auto-reveals all logically safe cells (⚠️ Game over if
-        flags are wrong!)<br />
-        UI Scale: Adjust slider to resize cells (31px)
+        <strong class="controls-title">Controls:</strong>
+        <p>Left click to reveal • Right click to flag</p>
+        <p>Hover + Spacebar to flag • Space on numbers to expand</p>
+        <p>Reveal Safe: Auto-reveals all logically safe cells (⚠️ Game over if flags are wrong!)</p>
+        <p>UI Scale: Adjust slider to resize cells (31px)</p>
       </div>
+      
     </main>
     <script src="script.js"></script>
   </body>

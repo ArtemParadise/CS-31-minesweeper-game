@@ -132,6 +132,12 @@ div.parent {
   cursor: pointer;
 }
 
+.scale-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #B2B2BB;
+}
 
 
 /* Если нужно, чтобы кнопка и слайдер были чуть красивее */
@@ -167,73 +173,108 @@ div.parent {
 .slider::-webkit-slider-thumb:focus {
   box-shadow: 0 0 10px 5px rgba(255, 255, 0, 0.7);
 }
+ 
+.indicators {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  justify-content: center;
+  color: black;
+  margin-bottom: 50px;
+  font-weight: 600;
+}
 
-
   
 
-  .game-wrapper {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-  }
-  
-  .board {
-    display: grid;
-    grid-template-columns: repeat(9, 35px);
-    grid-template-rows: repeat(9, 35px);
-    gap: 2px;
-    padding: 10px;
-    background: #555; 
-    border: 4px solid #333;
-  }
-  
-  /* клетки */
-  .cell {
-    width: 35px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: bold;
-    font-size: 18px;
-    border: 2px solid #888; 
-    cursor: default;
-    background: #bbb; 
-  }
-  
-  /* открытые пустые */
-  .cell.open {
-    background: #e0e0e0;
-  }
-  
-  /* цифры */
-  .cell.num1 { color: blue; background: #e0e0e0; }
-  .cell.num2 { color: green; background: #e0e0e0; }
-  .cell.num3 { color: red; background: #e0e0e0; }
-  .cell.num4 { color: darkblue; background: #e0e0e0; }
-  .cell.num5 { color: brown; background: #e0e0e0; }
-  .cell.num6 { color: teal; background: #e0e0e0; }
-  .cell.num7 { color: black; background: #e0e0e0; }
-  .cell.num8 { color: gray; background: #e0e0e0; }
-  
-  /* флаг */
-  .cell.flag {
-    background: yellow;
-  }
-  
-  /* бомба */
-  .cell.bomb {
-    background: red;
-    color: black;
-  }
-  
-  .controls {
-    margin: 20px auto;
-    max-width: 600px;
-    padding: 10px;
-    background: #2a2a2a;
-    border-radius: 6px;
-    text-align: left;
-    font-size: 14px;
-    line-height: 1.5;
-  }
+.game-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+/* 1. Внешняя белая рамка */
+.outer-border {
+  background: white;        /* почти белая */
+  border: 1px solid #90A1B9;     /* тёмно-серая рамка */
+  padding: 10px;               /* толщина белой рамки */
+  border-radius: 10px;
+  display: inline-block;      /* чтобы под размер поля */
+}
+
+/* 2. Внутренняя подложка */
+.inner-bg {
+  background: #CAD5E2;        /* светло-серая подложка */
+  padding: 6px;               /* отступ для сетки клеток */
+  border-radius: 8px;
+}
+
+/* 3. Сетка поля */
+.board {
+  display: grid;
+  grid-template-columns: repeat(9, 35px);
+  grid-template-rows: repeat(9, 35px);
+  gap: 2px;                   /* расстояние между клетками = фон подложки */
+  background: #CAD5E2;        /* фон для "бордеров" */
+}
+
+/* Клетки */
+.cell {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 18px;
+  /* background: #D5DEE9;           закрытая клетка */
+  background: linear-gradient(to bottom right, #E1E7F0, #CBD6E2);
+
+  cursor: default;
+  border-radius: 2px;
+}
+
+/* открытые пустые */
+.cell.open {
+  /* background: #F3F4F6; */
+  background: linear-gradient(to bottom, #ECEDEF, #F3F4F6);
+}
+
+/* цифры */
+.cell.num1 { color: blue; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+.cell.num2 { color: green; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+.cell.num3 { color: red; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+.cell.num4 { color: darkblue; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+.cell.num5 { color: brown; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+.cell.num6 { color: teal; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+.cell.num7 { color: black; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+.cell.num8 { color: gray; background: linear-gradient(to bottom, #ECEDEF, #F3F4F6); }
+
+/* флаг */
+.cell.flag {
+  background: linear-gradient(to bottom right, #E1E7F0, #CBD6E2);
+}
+
+/* бомба */
+.cell.bomb {
+  background: red;
+  color: black;
+}
+
+.controls {
+  text-align: center; /* выравнивание всего текста по центру */
+  margin: 20px auto;
+  max-width: 600px; /* опционально, чтобы блок не растягивался слишком сильно */
+  font-family: sans-serif;
+  line-height: 1.5; /* чтобы строки не слипались */
+  color: #314158;
+  font-size: 15px;
+}
+
+.controls-title {
+  display: block;    /* чтобы заголовок был на отдельной строке */
+  font-weight: 900; /* жирный */
+  font-size: 17px;   /* можно увеличить размер */
+  margin-bottom: 10px;
+  color: #314158;
+}
