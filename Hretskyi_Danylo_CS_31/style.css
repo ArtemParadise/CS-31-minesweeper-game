@@ -180,7 +180,7 @@ h2 {
     border-color: var(--neon-cyan) var(--neon-purple) var(--neon-purple) var(--neon-cyan);
     cursor: pointer;
     box-shadow: 0 0 8px var(--neon-cyan);
-    color: var(--white);
+    color: var(--white); 
 }
 
 .closed-cell:hover {
@@ -230,7 +230,7 @@ h2 {
 
 }
 
-.flagged-cell {
+/* .flagged-cell {
     background-color: var(--neon-yellow);
     border: 2px solid;
     border-color: var(--neon-cyan) var(--neon-purple) var(--neon-purple) var(--neon-cyan);
@@ -271,4 +271,29 @@ h2 {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+} */
+ 
+/* 1) FLAGGED БЕЗ МІНИ: пальма на закритій клітинці (без жовтого фону) */
+.closed-cell.flagged-cell:not(.mine-cell)::after{ content:'🌴'; }
+
+/* 2) FLAGGED З МІНОЮ: пальма НА ЖОВТОМУ ФОНІ (закрита) */
+.closed-cell.flagged-cell.mine-cell{
+  background-color:var(--neon-yellow);
+  border:2px solid; 
+  border-color:var(--neon-cyan) var(--neon-purple) var(--neon-purple) var(--neon-cyan);
+  color:var(--synth-dark);
 }
+.closed-cell.flagged-cell.mine-cell::after{ content:'🌴'; }
+
+/* 3) БОМБА ЗАКРИТА (не flagged): без іконки */
+.closed-cell.mine-cell::after{ content:''; }
+
+/* 4) БОМБА ВІДКРИТА (без червоного фону): показує кактус */
+.open-cell.mine-cell::after{ content:'🌵'; }
+
+/* 5) БОМБА НАТИСНУТА (вибух): червоний фон + кактус */
+.open-cell.mine-cell.exploded{
+  background-color:var(--neon-red); color:var(--white);
+  border:2px solid; border-color:var(--neon-cyan) var(--neon-purple) var(--neon-purple) var(--neon-cyan);
+}
+.open-cell.mine-cell.exploded::after{ content:'🌵'; }
