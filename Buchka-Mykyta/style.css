@@ -7,13 +7,18 @@
 	--tile-light: #82878b;
 	--flag: #d9534f;
 	--mine: #111;
+	--bdr-radius-game: 6px;
 }
 /* Base styles for all elements - consistent fonts and rounded corners */
 *{
 	box-sizing: border-box;
 	font-family: Segoe UI, Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input{
 	border-radius: 4px;
 }
+
 /* Center the game board vertically and horizontally with a gradient background */
 body{
 	background: linear-gradient(#2e3135, #202224);
@@ -28,7 +33,7 @@ body{
 	display: inline-block;
 	background: linear-gradient(#51565b, #3d4145);
 	padding: 12px;
-	border-radius: 6px;
+	border-radius: 9px;
 	border: 6px solid #2a2d30;
 }
 /* Top toolbar containing mine counter, reset button and timer */
@@ -79,6 +84,7 @@ body{
 	color: #0b58b9;
 	font-weight: 700;
 	user-select: none;
+	border-radius: 5px;
 }
 /* Revealed cell appearance */
 .cell.uncovered{
