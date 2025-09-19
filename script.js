@@ -8,7 +8,25 @@ document.addEventListener('DOMContentLoaded', () => {
   const bestEl  = document.getElementById('best');
   const modal = document.getElementById('modal');
   const modalText = document.getElementById('modal-text');
+    const gameBoard = document.getElementById('game-board');
+    const flagsLeftElement = document.querySelector('.game-board-header__flags_left');
+    const startButton = document.querySelector('.start-button');
+    const timerElement = document.querySelector('.game-board-header__timer');
 
+    const gridSize = 10; // 10x10 grid
+    const initialNumMines = 15; // Initial number of mines (increase for more difficulty)
+    let numMines = initialNumMines;
+    let board = [];
+    let cells = [];
+    let gameOver = false;
+    let flagsPlaced = 0;
+    let timerInterval;
+    let seconds = 0;
+
+    // Update flags left display
+    function updateFlagsLeft() {
+        flagsLeftElement.textContent = String(numMines - flagsPlaced).padStart(3, '0');
+    }
   const difficultySel = document.getElementById('difficulty');
   const customWrap = document.getElementById('custom-controls');
   const widthInp = document.getElementById('width');
