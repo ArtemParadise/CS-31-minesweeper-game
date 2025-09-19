@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const timerElement = document.querySelector('.game-board-header__timer');
 
     const gridSize = 10; // 10x10 grid
-    const initialNumMines = 15; // Initial number of mines
+    const initialNumMines = 15; // Initial number of mines (increase for more difficulty)
     let numMines = initialNumMines;
     let board = [];
     let cells = [];
