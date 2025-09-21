@@ -32,6 +32,7 @@ body {
   padding: 4px 10px;
   cursor: pointer;
 }
+
 .new-game:hover {
   background: #f060c5;
 }
@@ -73,6 +74,7 @@ body {
   background-color: #dcedc8;
   border: 1px solid #8bc34a;
 }
+
 .cell.flag::after {
   content: "🚩";
 }
@@ -81,6 +83,7 @@ body {
   background-color: #ffebee;
   border: 1px solid #ef9a9a;
 }
+
 .cell.mine::after {
   content: "💣";
 }
@@ -89,6 +92,7 @@ body {
   background-color: #f44336;
   color: #fff;
 }
+
 .cell.mine-clicked::after {
   content: "💥";
 }
