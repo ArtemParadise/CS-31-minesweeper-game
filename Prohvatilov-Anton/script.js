@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const randomState = states[Math.floor(Math.random() * states.length)];
     cell.classList.add(randomState);
 
-    // Add text for numbered cells
     if (randomState.startsWith('number-')) {
       cell.textContent = randomState.split('-')[1];
     }
