@@ -8,7 +8,10 @@ document.addEventListener("DOMContentLoaded", () => {
     'flag-mine',
     'flag',
     'mine',
-    'mine-clicked'
+    'mine-clicked',
+    'number-1',
+    'number-2',
+    'number-3'
   ];
 
   for (let i = 0; i < 256; i++) {
@@ -17,6 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const randomState = states[Math.floor(Math.random() * states.length)];
     cell.classList.add(randomState);
+
+    // Add text for numbered cells
+    if (randomState.startsWith('number-')) {
+      cell.textContent = randomState.split('-')[1];
+    }
 
     board.appendChild(cell);
   }

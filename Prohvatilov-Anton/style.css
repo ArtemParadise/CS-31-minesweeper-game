@@ -1,4 +1,3 @@
-
 body {
     border-radius: 16px;
     display: flex;
@@ -23,6 +22,7 @@ body {
     background-color: #bdbdbd;
     box-shadow: #222 0 8px 32px 0, #222 0 1.5px 4px 0;
 }
+
 .game-board-header{
     border-radius: 16px;
     margin-left: 25px;
@@ -106,6 +106,7 @@ body {
   box-shadow: 0 -4px rgb(0 0 0 / 50%) inset, 0 4px rgb(255 255 255 / 20%) inset,
     -4px 0 rgb(255 255 255 / 20%) inset, 4px 0 rgb(0 0 0 / 50%) inset;
 }
+
 .game-board-button:hover:after{
   box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
 }
@@ -153,30 +154,53 @@ body {
     background: #3d4142;
     position: relative;
 }
-.game-board-cell.flag-mine::after {
-    content: "🚩💣";
+
+.game-board-cell.flag-mine::after,
+.game-board-cell.flag::after,
+.game-board-cell.flag-mine::after,
+.game-board-cell.mine-clicked::after {
     position: absolute;
     left: 50%; top: 50%;
     transform: translate(-50%, -50%);
     font-size: 1.5rem;
 }
 
-.game-board-cell.flag {
-    background: #3d4142;
-    position: relative;
-}
-.game-board-cell.flag::after {
+.game-board-cell.flag-mine::after {
     content: "🚩";
-    position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
+}
+
+.game-board-cell.number-1 {
+    color: #1976d2;
+    font-weight: bold;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-board-cell.number-2 {
+    color: #388e3c;
+    font-weight: bold;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-board-cell.number-3 {
+    color: #d32f2f;
+    font-weight: bold;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .game-board-cell.mine {
     background: #e74c3c;
     position: relative;
 }
+
 .game-board-cell.mine::after {
     content: "💣";
     position: absolute;
@@ -190,6 +214,7 @@ body {
     position: relative;
     animation: shake 0.2s 2;
 }
+
 .game-board-cell.mine-clicked::after {
     content: "💥";
     position: absolute;
