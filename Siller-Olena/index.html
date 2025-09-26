@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Minesweeper</h1>
+
+        <div class="settings">
+            <label>Board size: 
+                <input type="number" id="board-size-x" value="10" min="5" max="30"> x 
+                <input type="number" id="board-size-y" value="10" min="5" max="30">
+            </label>
+            <label>Bombs: 
+                <input type="number" id="bomb-count" value="10" min="1">
+            </label>
+            <button id="new-game" onclick="startGame()">New Game</button>
+        </div>
+
+        <div class="status-bar">
+            <div>🚩 Flags: <span id="bomb-counter">0</span> / <span id="bomb-total">0</span></div>
+            <div>⏱ Time: <span id="timer">0</span> s</div>
+        </div>
+
+        <div id="game-board"></div>
+    </div>
+    <script src="actions.js"></script>
+</body>
+</html>
