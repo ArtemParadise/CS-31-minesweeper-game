@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <h1 class="title">Minesweeper</h1>
+
+      <section class="toolbar" aria-label="Панель керування">
+        <div class="toolbar__group">
+          <label class="select">
+            <span>Рівень</span>
+            <select id="difficulty">
+              <option value="easy">Легка (9×9, 10)</option>
+              <option value="medium" selected>Середня (16×16, 40)</option>
+              <option value="hard">Важка (30×16, 99)</option>
+              <option value="custom">Кастом</option>
+            </select>
+          </label>
+
+          <div id="custom-controls" class="custom hidden">
+            <label
+              >Ширина
+              <input id="width" type="number" min="5" max="40" value="10"
+            /></label>
+            <label
+              >Висота
+              <input id="height" type="number" min="5" max="30" value="10"
+            /></label>
+            <label
+              >Міни <input id="mines" type="number" min="1" value="15"
+            /></label>
+          </div>
+        </div>
+
+        <div class="toolbar__group">
+          <button
+            id="start"
+            class="btn btn--primary"
+            aria-label="Почати або перезапустити гру"
+          >
+            🙂 Новa гра
+          </button>
+          <button id="theme" class="btn" aria-label="Перемкнути тему">
+            🌓 Тема
+          </button>
+        </div>
+
+        <div class="toolbar__group counters">
+          <div class="counter" aria-live="polite">
+            🚩 <span id="flags">000</span>
+          </div>
+          <div class="counter" aria-live="polite">
+            ⏱️ <span id="timer">00:00</span>
+          </div>
+          <div class="counter" aria-live="polite">
+            🏆 <span id="best">—</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="board-wrap">
+        <div
+          id="board"
+          class="board"
+          role="grid"
+          aria-label="Ігрове поле"
+          tabindex="0"
+        ></div>
+      </section>
+
+      <dialog id="modal">
+        <p id="modal-text"></p>
+        <form method="dialog">
+          <button class="btn btn--primary">OK</button>
+        </form>
+      </dialog>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
