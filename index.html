@@ -1,74 +1,31 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minesweeper Game</title>
-    <link rel="stylesheet" href="style.css">
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>Minesweeper</title>
+	<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Minesweeper Game</h1>
-    <div class="game-board-wrapper">
-        <header class="game-board-header">
-            <div class="game-board-header__flags_left">007</div>
-            <button class="start-button">Start</button>
-            <div class="game-board-header__timer">00:00</div>
-        </header>
-        <div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell mine-cell"></div>
-            </div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell mine-cell"></div>
-            </div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell mine-cell"></div>
-            </div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell mine-cell"></div>
-            </div>
-        </div>
-    </div>
+	<div class="game">
+		<header class="toolbar">
+			<div id="mines" class="counter">000</div>
+			<button id="reset" class="smiley">🙂</button>
+			<div id="timer" class="counter">000</div>
+		</header>
 
-    <!-- <div id="game-board">
-        hello
-    </div> -->
-    <!-- <script src="script.js"></script> -->
+		<section id="board" class="board"></section>
+
+		<footer class="footer">
+			<div class="controls">
+				<label>Rows: <input id="rows" type="number" min="5" max="40" value="10"></label>
+				<label>Cols: <input id="cols" type="number" min="5" max="60" value="10"></label>
+				<label>Mines: <input id="minesInput" type="number" min="1" value="15"></label>
+				<button id="new">New Game</button>
+			</div>
+			<p class="hint">Left-click to reveal, right-click to flag. Double-click a number to chord.</p>
+		</footer>
+	</div>
+	<script src="script.js"></script>
 </body>
 </html>
