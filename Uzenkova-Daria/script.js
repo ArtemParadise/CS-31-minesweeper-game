@@ -24,10 +24,10 @@ function createCell(hasMine = false) {
 // Створення пустого поля (2D масив)
 function createEmptyBoard(rows, cols) {
   const board = new Array(rows);
-  for (let r = 0; r < rows; r++) {
-    board[r] = new Array(cols);
-    for (let c = 0; c < cols; c++) {
-      board[r][c] = createCell(false);
+  for (let row = 0; row < rows; row++) {
+    board[row] = new Array(cols);
+    for (let col = 0; col < cols; col++) {
+      board[row][col] = createCell(false);
     }
   }
   return board;
@@ -35,34 +35,36 @@ function createEmptyBoard(rows, cols) {
 
 // Розміщення мін
 function placeMines(board, positions) {
-  for (const pos of positions) {
-    const { r, c } = pos;
-    if (board[r] && board[r][c]) board[r][c].hasMine = true;
+  for (const position of positions) {
+    const { r: row, c: col } = position;
+    if (board[row] && board[row][col]) {
+      board[row][col].hasMine = true;
+    }
   }
 }
 
 // Підрахунок кількості сусідніх мін
 function computeAdjacentCounts(board) {
-  const rows = board.length;
-  const cols = board[0].length;
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      if (board[r][c].hasMine) {
-        board[r][c].adjacentMines = -1; 
+  const totalRows = board.length;
+  const totalCols = board[0].length;
+  for (let row = 0; row < totalRows; row++) {
+    for (let col = 0; col < totalCols; col++) {
+      if (board[row][col].hasMine) {
+        board[row][col].adjacentMines = -1;
         continue;
       }
-      let count = 0;
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          if (dr === 0 && dc === 0) continue;
-          const nr = r + dr;
-          const nc = c + dc;
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-            if (board[nr][nc].hasMine) count++;
+      let mineCount = 0;
+      for (let dRow = -1; dRow <= 1; dRow++) {
+        for (let dCol = -1; dCol <= 1; dCol++) {
+          if (dRow === 0 && dCol === 0) continue;
+          const newRow = row + dRow;
+          const newCol = col + dCol;
+          if (newRow >= 0 && newRow < totalRows && newCol >= 0 && newCol < totalCols) {
+            if (board[newRow][newCol].hasMine) mineCount++;
           }
         }
       }
-      board[r][c].adjacentMines = count;
+      board[row][col].adjacentMines = mineCount;
     }
   }
 }
