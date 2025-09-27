@@ -6,37 +6,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Minesweeper</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.2/color-thief.umd.js"></script>
+    <script src="audio-player.js"></script>
 </head>
 <body>
-    <!-- Main game container -->
-    <div class="game">
-        <!-- Top toolbar with mine counter, reset button, and timer -->
-        <header class="toolbar">
-            <!-- Mine counter display -->
-            <div id="mines" class="counter">000</div>
-            <!-- Reset/emoji button -->
-            <button id="reset" class="smiley">🙂</button>
-            <!-- Timer display -->
-            <div id="timer" class="counter">000</div>
-        </header>
+    <!-- Main container for all content -->
+    <div class="main-container">
+        <!-- Game section -->
+        <div class="game-section">
+            <!-- Existing game code -->
+            <div class="game">
+                <!-- Top toolbar with mine counter, reset button, and timer -->
+                <header class="toolbar">
+                    <!-- Mine counter display -->
+                    <div id="mines" class="counter">000</div>
+                    <!-- Reset/emoji button -->
+                    <button id="reset" class="smiley">🙂</button>
+                    <!-- Timer display -->
+                    <div id="timer" class="counter">000</div>
+                </header>
 
-        <!-- Game board grid container -->
-        <section id="board" class="board"></section>
+                <!-- Game board grid container -->
+                <section id="board" class="board"></section>
 
-        <!-- Game controls and instructions -->
-        <footer class="footer">
-            <!-- Game configuration controls -->
-            <div class="controls">
-                <label>Rows: <input id="rows" type="number" min="5" max="40" value="15"></label>
-                <label>Cols: <input id="cols" type="number" min="5" max="60" value="15"></label>
-                <label>Mines: <input id="minesInput" type="number" min="1" value="50"></label>
-                <button id="new">New Game</button>
+                <!-- Game controls and instructions -->
+                <footer class="footer">
+                    <!-- Game configuration controls -->
+                    <div class="controls">
+                        <label>Rows: <input id="rows" type="number" min="5" max="40" value="15"></label>
+                        <label>Cols: <input id="cols" type="number" min="5" max="60" value="15"></label>
+                        <label>Mines: <input id="minesInput" type="number" min="1" value="50"></label>
+                        <button id="new">New Game</button>
+                    </div>
+                    <!-- Game instructions -->
+                    <p class="hint">Left-click to reveal, right-click to flag. Double-click a number to chord.</p>
+                </footer>
             </div>
-            <!-- Game instructions -->
-            <p class="hint">Left-click to reveal, right-click to flag. Double-click a number to chord.</p>
-        </footer>
+        </div>
+        
+        <!-- Music player section -->
+        <div class="player-section">
+            <!-- Existing player code -->
+            <div class="custom-player">
+                <div class="player-bg"></div>
+                <div class="player-content">
+                    <div class="album-art">
+                        <img src="" alt="Album Art">
+                    </div>
+                    <div class="track-info">
+                        <h3 class="track-title"></h3>
+                        <p class="track-artist"></p>
+                    </div>
+                    <div class="player-controls">
+                        <button class="prev-track">
+                            <i class="fas fa-backward"></i>
+                        </button>
+                        <button class="play-pause">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button class="next-track">
+                            <i class="fas fa-forward"></i>
+                        </button>
+                        <div class="progress-area">
+                            <div class="progress-bar">
+                                <div class="current-progress"></div>
+                            </div>
+                            <div class="time-info">
+                                <span class="current-time">0:00</span>
+                                <span class="duration">0:00</span>
+                            </div>
+                        </div>
+                        <div class="volume-container">
+                            <button class="volume-btn">
+                                <i class="fas fa-volume-up"></i>
+                            </button>
+                            <div class="volume-slider">
+                                <div class="volume-bar">
+                                    <div class="volume-progress"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <audio id="audio-player" preload="metadata"></audio>
+            </div>
+        </div>
     </div>
     <!-- Game logic script -->
+     <script src="assets/music/tracks.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
