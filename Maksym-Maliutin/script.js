@@ -1,218 +1,231 @@
-// script.js
-
-document.addEventListener('DOMContentLoaded', () => {
-  const gameBoard = document.getElementById('game-board');
-  const flagsLeftElement = document.querySelector('.game-board-header__flags_left');
-  const startButton = document.querySelector('.start-button');
-  const timerElement = document.querySelector('.game-board-header__timer');
-
-  const gridSize = 10; // 10x10 grid
-  const initialNumMines = 15; // Initial number of mines (increase for more difficulty)
-  let numMines = initialNumMines;
-  let board = [];
-  let cells = [];
-  let gameOver = false;
-  let flagsPlaced = 0;
-  let timerInterval;
-  let seconds = 0;
-
-  // Update flags left display
-  function updateFlagsLeft() {
-      flagsLeftElement.textContent = String(numMines - flagsPlaced).padStart(3, '0');
-  }
-
-  // Start timer
-  function startTimer() {
-      clearInterval(timerInterval);
-      seconds = 0;
-      timerElement.textContent = '00:00';
-      timerInterval = setInterval(() => {
-          seconds++;
-          const minutes = Math.floor(seconds / 60);
-          const remainingSeconds = seconds % 60;
-          timerElement.textContent = 
-              `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-      }, 1000);
-  }
-
-  // Stop timer
-  function stopTimer() {
-      clearInterval(timerInterval);
-  }
-
-  // Reset game
-  function resetGame() {
-      stopTimer();
-      gameBoard.innerHTML = '';
-      board = [];
-      cells = [];
-      gameOver = false;
-      flagsPlaced = 0;
-      numMines = initialNumMines;
-      updateFlagsLeft();
-      createBoard();
-      startButton.textContent = 'Reset';
-  }
-
-  // Create the game board
-  function createBoard() {
-      gameBoard.style.gridTemplateColumns = `repeat(${gridSize}, 30px)`;
-      for (let i = 0; i < gridSize * gridSize; i++) {
-          const cell = document.createElement('div');
-          cell.classList.add('cell');
-          cell.setAttribute('data-id', i);
-          cell.addEventListener('click', () => handleClick(cell));
-          cell.addEventListener('contextmenu', (e) => handleRightClick(e, cell));
-          gameBoard.appendChild(cell);
-          cells.push(cell);
-          board.push({ isMine: false, isRevealed: false, isFlagged: false, surroundingMines: 0 });
-      }
-      placeMines();
-      calculateSurroundingMines();
-      updateFlagsLeft();
-  }
-
-  // Place mines randomly
-  function placeMines() {
-      let minesPlaced = 0;
-      while (minesPlaced < numMines) {
-          const randomIndex = Math.floor(Math.random() * gridSize * gridSize);
-          if (!board[randomIndex].isMine) {
-              board[randomIndex].isMine = true;
-              minesPlaced++;
-          }
-      }
-  }
-
-  // Calculate surrounding mines for each cell
-  function calculateSurroundingMines() {
-      for (let i = 0; i < gridSize * gridSize; i++) {
-          if (!board[i].isMine) {
-              let mineCount = 0;
-              const neighbors = getNeighbors(i);
-              neighbors.forEach(neighborIndex => {
-                  if (board[neighborIndex].isMine) {
-                      mineCount++;
-                  }
-              });
-              board[i].surroundingMines = mineCount;
-          }
-      }
-  }
-
-  // Get neighbors of a cell
-  function getNeighbors(index) {
-      const neighbors = [];
-      const row = Math.floor(index / gridSize);
-      const col = index % gridSize;
-
-      for (let i = -1; i <= 1; i++) {
-          for (let j = -1; j <= 1; j++) {
-              if (i === 0 && j === 0) continue;
-
-              const newRow = row + i;
-              const newCol = col + j;
-              const newIndex = newRow * gridSize + newCol;
-
-              if (newRow >= 0 && newRow < gridSize && newCol >= 0 && newCol < gridSize) {
-                  neighbors.push(newIndex);
-              }
-          }
-      }
-      return neighbors;
-  }
-
-  // Handle cell click
-  function handleClick(cell) {
-      if (gameOver || cell.classList.contains('revealed') || cell.classList.contains('flagged')) return;
-
-      const id = parseInt(cell.getAttribute('data-id'));
-      const cellData = board[id];
-
-      if (cellData.isMine) {
-          revealMines();
-          gameOver = true;
-          stopTimer();
-          alert('Game Over! You hit a mine.');
-          return;
-      }
-
-      if (seconds === 0) startTimer(); // Start timer on first valid click
-      revealCell(id);
-      checkWin();
-  }
-
-  // Handle right click (flagging)
-  function handleRightClick(e, cell) {
-      e.preventDefault();
-      if (gameOver || cell.classList.contains('revealed')) return;
-
-      const id = parseInt(cell.getAttribute('data-id'));
-      const cellData = board[id];
-
-      if (cell.classList.contains('flagged')) {
-          cell.classList.remove('flagged');
-          cell.textContent = '';
-          cellData.isFlagged = false;
-          flagsPlaced--;
-      } else if (flagsPlaced < numMines) {
-          cell.classList.add('flagged');
-          cell.textContent = '🚩';
-          cellData.isFlagged = true;
-          flagsPlaced++;
-      } else {
-          alert('No more flags left!');
-      }
-      updateFlagsLeft();
-  }
-
-  // Reveal a cell and recursively reveal empty neighbors
-  function revealCell(index) {
-      const cell = cells[index];
-      const cellData = board[index];
-
-      if (cellData.isRevealed || cellData.isFlagged) return;
-
-      cellData.isRevealed = true;
-      cell.classList.add('revealed');
-
-      if (cellData.surroundingMines > 0) {
-          cell.textContent = cellData.surroundingMines;
-          cell.classList.add(`mines-${cellData.surroundingMines}`);
-      } else {
-          const neighbors = getNeighbors(index);
-          neighbors.forEach(neighborIndex => revealCell(neighborIndex));
-      }
-  }
-
-  // Reveal all mines at game over
-  function revealMines() {
-      for (let i = 0; i < gridSize * gridSize; i++) {
-          if (board[i].isMine) {
-              cells[i].classList.add('mine');
-              cells[i].textContent = '💣';
-          }
-      }
-  }
-
-  // Check if the player has won
-  function checkWin() {
-      let revealedCount = 0;
-      for (let i = 0; i < gridSize * gridSize; i++) {
-          if (board[i].isRevealed && !board[i].isMine) {
-              revealedCount++;
-          }
-      }
-
-      if (revealedCount === (gridSize * gridSize - numMines)) {
-          gameOver = true;
-          stopTimer();
-          alert('Congratulations! You won!');
-      }
-  }
-
-  startButton.addEventListener('click', resetGame);
-
-  // Initial game setup
-  createBoard();
+// --- Константи станів клітинки ---
+const CELL_STATE = Object.freeze({
+    CLOSED: 'closed',
+    OPEN: 'open',
+    FLAGGED: 'flagged'
 });
+
+// --- Створюємо фабрику для клітинки ---
+function createCell({ hasMine = false, neighborCount = 0, state = CELL_STATE.CLOSED } = {}) {
+    return {
+        hasMine: Boolean(hasMine),
+        neighborCount: Number(neighborCount),
+        state
+    };
+}
+
+// --- Ігровий стан (структура) ---
+class GameState {
+    constructor(rows = 10, cols = 10, mineCount = 10) {
+        this.rows = rows;
+        this.cols = cols;
+        this.mineCount = mineCount;
+        this.status = 'playing';
+        this.board = createEmptyBoard(rows, cols);
+    }
+}
+
+// --- Створити пусте поле ---
+function createEmptyBoard(rows, cols) {
+    const board = new Array(rows);
+    for (let r = 0; r < rows; r++) {
+        board[r] = new Array(cols);
+        for (let c = 0; c < cols; c++) {
+            board[r][c] = createCell();
+        }
+    }
+    return board;
+}
+
+// --- Перевірка валідності позиції ---
+function isValidPos(board, r, c) {
+    return r >= 0 && r < board.length && c >= 0 && c < board[0].length;
+}
+
+// --- Поставити міни у задані позиції ---
+function placeMinesAtPositions(board, positions = []) {
+    for (const [r, c] of positions) {
+        if (isValidPos(board, r, c)) board[r][c].hasMine = true;
+    }
+}
+
+// --- Обчислити neighborCount ---
+function computeNeighborCounts(board) {
+    const rows = board.length;
+    const cols = board[0].length;
+
+    for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+            if (board[r][c].hasMine) {
+                board[r][c].neighborCount = null;
+                continue;
+            }
+            let count = 0;
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    if (dr === 0 && dc === 0) continue;
+                    const nr = r + dr;
+                    const nc = c + dc;
+                    if (isValidPos(board, nr, nc) && board[nr][nc].hasMine) count++;
+                }
+            }
+            board[r][c].neighborCount = count;
+        }
+    }
+}
+
+// --- Ініціалізація тестового поля ---
+function initTestGame(rows = 10, cols = 10, mines = []) {
+    const game = new GameState(rows, cols, mines.length);
+    placeMinesAtPositions(game.board, mines);
+    computeNeighborCounts(game.board);
+    return game;
+}
+
+// --- Вивід поля в консоль ---
+function printBoardToConsole(board) {
+    const rows = board.length;
+    const cols = board[0].length;
+    let out = '\n';
+    for (let r = 0; r < rows; r++) {
+        let line = '';
+        for (let c = 0; c < cols; c++) {
+            const cell = board[r][c];
+            if (cell.hasMine) line += '💣';
+            else line += ' ' + cell.neighborCount + ' ';
+        }
+        out += line + '\n';
+    }
+    console.log(out);
+}
+
+// --- Приклад тестового поля ---
+const exampleMines = [
+    [0, 3], [0, 6], [1, 8], [2, 2], [3, 0], [4, 5], [6, 9], [7, 7], [8, 1], [9, 4]
+];
+const testGame = initTestGame(10, 10, exampleMines);
+console.log('Test game initialized. Game state:');
+console.log({ rows: testGame.rows, cols: testGame.cols, mineCount: testGame.mineCount, status: testGame.status });
+printBoardToConsole(testGame.board);
+
+// --- Нові функції для логіки гри ---
+// Генерація випадкового поля
+function generateField(rows = 10, cols = 10, mineCount = 10) {
+    const game = new GameState(rows, cols, mineCount);
+    let minesPlaced = 0;
+    while (minesPlaced < mineCount) {
+        const r = Math.floor(Math.random() * rows);
+        const c = Math.floor(Math.random() * cols);
+        if (!game.board[r][c].hasMine) {
+            game.board[r][c].hasMine = true;
+            minesPlaced++;
+        }
+    }
+    computeNeighborCounts(game.board);
+    return game.board;
+}
+
+// Підрахунок мін навколо клітинки
+function countNeighbourMines(board, row, col) {
+    if (!isValidPos(board, row, col)) return 0;
+    return board[row][col].neighborCount;
+}
+
+// Відкриття клітинки
+function openCell(game, row, col) {
+    if (!isValidPos(game.board, row, col)) return;
+    const cell = game.board[row][col];
+    if (cell.state !== CELL_STATE.CLOSED) return;
+    if (cell.hasMine) {
+        cell.state = CELL_STATE.OPEN;
+        game.status = 'lost';
+        return;
+    }
+    function reveal(r, c) {
+        if (!isValidPos(game.board, r, c)) return;
+        const ccell = game.board[r][c];
+        if (ccell.state === CELL_STATE.OPEN || ccell.state === CELL_STATE.FLAGGED) return;
+        ccell.state = CELL_STATE.OPEN;
+        if (ccell.neighborCount === 0) {
+            for (let dr = -1; dr <= 1; dr++) {
+                for (let dc = -1; dc <= 1; dc++) {
+                    if (dr === 0 && dc === 0) continue;
+                    reveal(r + dr, c + dc);
+                }
+            }
+        }
+    }
+    reveal(row, col);
+}
+
+// Встановлення / зняття прапорця
+function toggleFlag(game, row, col) {
+    if (!isValidPos(game.board, row, col)) return;
+    const cell = game.board[row][col];
+    if (cell.state === CELL_STATE.CLOSED) cell.state = CELL_STATE.FLAGGED;
+    else if (cell.state === CELL_STATE.FLAGGED) cell.state = CELL_STATE.CLOSED;
+}
+
+// Таймер
+let timerId = null;
+let timeElapsed = 0;
+
+function startTimer() {
+    if (timerId) return;
+    timerId = setInterval(() => {
+        timeElapsed++;
+        console.log('Time:', timeElapsed);
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerId);
+    timerId = null;
+}
+
+// --- Прив'язка до window для зручності тестування ---
+window.minesweeperGame = {
+    CELL_STATE,
+    createCell,
+    createEmptyBoard,
+    placeMinesAtPositions,
+    computeNeighborCounts,
+    initTestGame,
+    printBoardToConsole,
+    testGame,
+    generateField,
+    countNeighbourMines,
+    openCell,
+    toggleFlag,
+    startTimer,
+    stopTimer,
+    timeElapsed
+};
+
+// --- Як тестувати реалізовані функції ---
+
+// 1. Генерація випадкового поля
+// const randomBoard = minesweeperGame.generateField(10, 10, 15);
+// console.log(randomBoard);
+// Кожен запуск має створювати поле 10x10 з 15 випадковими мінами
+
+// 2. Підрахунок кількості мін навколо клітинки
+// console.log(minesweeperGame.countNeighbourMines(testGame.board, 0, 0));
+// console.log(minesweeperGame.countNeighbourMines(testGame.board, 1, 8));
+// Повинно показувати правильну кількість сусідніх мін
+
+// 3. Відкриття клітинки
+// minesweeperGame.openCell(testGame, 2, 3);
+// console.log(testGame.board[2][3].state);
+// Якщо клітинка без міни — відкривається, якщо 0 — відкриваються сусідні
+// Якщо клітинка з міною — testGame.status = 'lost'
+
+// 4. Встановлення / зняття прапорця
+// minesweeperGame.toggleFlag(testGame, 0, 0);
+// console.log(testGame.board[0][0].state);
+// Повинно змінювати стан між 'closed' і 'flagged'
+
+// 5. Таймер
+// minesweeperGame.startTimer();
+// setTimeout(() => { minesweeperGame.stopTimer(); console.log('Час гри:', minesweeperGame.timeElapsed); }, 5000);
+// Починає відлік часу і зупиняє через 5 секунд, виводить пройдений час
