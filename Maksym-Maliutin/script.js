@@ -201,3 +201,31 @@ window.minesweeperGame = {
     stopTimer,
     timeElapsed
 };
+
+// --- Як тестувати реалізовані функції ---
+
+// 1. Генерація випадкового поля
+// const randomBoard = minesweeperGame.generateField(10, 10, 15);
+// console.log(randomBoard);
+// Кожен запуск має створювати поле 10x10 з 15 випадковими мінами
+
+// 2. Підрахунок кількості мін навколо клітинки
+// console.log(minesweeperGame.countNeighbourMines(testGame.board, 0, 0));
+// console.log(minesweeperGame.countNeighbourMines(testGame.board, 1, 8));
+// Повинно показувати правильну кількість сусідніх мін
+
+// 3. Відкриття клітинки
+// minesweeperGame.openCell(testGame, 2, 3);
+// console.log(testGame.board[2][3].state);
+// Якщо клітинка без міни — відкривається, якщо 0 — відкриваються сусідні
+// Якщо клітинка з міною — testGame.status = 'lost'
+
+// 4. Встановлення / зняття прапорця
+// minesweeperGame.toggleFlag(testGame, 0, 0);
+// console.log(testGame.board[0][0].state);
+// Повинно змінювати стан між 'closed' і 'flagged'
+
+// 5. Таймер
+// minesweeperGame.startTimer();
+// setTimeout(() => { minesweeperGame.stopTimer(); console.log('Час гри:', minesweeperGame.timeElapsed); }, 5000);
+// Починає відлік часу і зупиняє через 5 секунд, виводить пройдений час
