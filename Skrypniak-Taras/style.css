@@ -64,6 +64,22 @@ button
     height: 24px;
 }
 
+#reset-button.scared
+{
+    background-image: url('assets/reset1.png');
+}
+
+#reset-button.loss
+{
+    background-image: url('assets/reset3.png');
+}
+
+#reset-button.win
+{
+    background-image: url('assets/reset2.png');
+}
+
+
 #reset-button:before
 {
     content: "";
@@ -128,6 +144,8 @@ button
 .revealed:before,
 .cell:active:not(.flag):before
 {
+    border-width: 1px;
+    padding: 2px 0;
     border-color: #808080 #c0c0c0 #c0c0c0 #808080;
 }
 
@@ -255,3 +273,9 @@ button
 {
     background-image: url('assets/counter9.png');
 }
+
+.digit-
+{
+    background-image: url('assets/counter-.png');
+}
+
