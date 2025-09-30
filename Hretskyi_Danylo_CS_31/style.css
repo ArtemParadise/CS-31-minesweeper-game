@@ -229,49 +229,6 @@ h2 {
         0 0 15px var(--neon-red);
 
 }
-
-/* .flagged-cell {
-    background-color: var(--neon-yellow);
-    border: 2px solid;
-    border-color: var(--neon-cyan) var(--neon-purple) var(--neon-purple) var(--neon-cyan);
-
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-
-}
-
-.flagged-cell::after {
-    content: '🌴';
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.mine-cell {
-    background-color: var(--neon-red);
-    border: 2px solid;
-    border-color: var(--neon-cyan) var(--neon-purple) var(--neon-purple) var(--neon-cyan);
-    color: var(--white);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.mine-cell::after {
-    content: '🌵';
-    font-size: 20px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-} */
  
 /* 1) FLAGGED БЕЗ МІНИ: пальма на закритій клітинці (без жовтого фону) */
 .closed-cell.flagged-cell:not(.mine-cell)::after{ content:'🌴'; }
