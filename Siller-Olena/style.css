@@ -1,7 +1,7 @@
 /* Фон страницы */
 body {
     font-family: Arial, sans-serif;
-    background: #ffffff;  /* белый фон */
+    background: #ffffff;  
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,7 +13,7 @@ body {
 .game-container {
     text-align: center;
     padding: 20px;
-    background: #e0e0e0; /* бледно-серый цвет */
+    background: #e0e0e0; 
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
@@ -46,8 +46,8 @@ body {
 .cell {
     width: 35px;
     height: 35px;
-    background-color: #fff27a; /* яркий желтый */
-    border: 2px solid #ffe135; /* контрастная граница */
+    background-color: #fff27a; 
+    border: 2px solid #ffe135; 
     border-radius: 4px;
     cursor: pointer;
     text-align: center;
@@ -58,11 +58,11 @@ body {
 }
 
 .cell:hover {
-    background-color: #ffec6f; /* при наведении слегка темнее */
+    background-color: #ffec6f; 
 }
 
 .cell.revealed {
-    background-color: #fffdb4; /* открытая клетка более яркая */
+    background-color: #fffdb4; 
     border: 2px solid #ffe135;
     cursor: default;
 }
@@ -104,12 +104,12 @@ button:hover {
     background: #45a049;
 }
 #new-game {
-    transition: box-shadow 0.3s ease, transform 0.2s ease; /* плавный переход */
+    transition: box-shadow 0.3s ease, transform 0.2s ease; 
 }
 /* Белая подсветка только для кнопки New Game */
 #new-game:hover
 {
-    box-shadow: 0 0 20px 8px rgba(255, 255, 255, 1), /* основной яркий glow */
+    box-shadow: 0 0 20px 8px rgba(255, 255, 255, 1), 
     0 0 30px 12px rgba(255, 255, 255, 0.5);
 transform: scale(1.05); 
 }    
