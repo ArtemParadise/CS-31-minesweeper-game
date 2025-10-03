@@ -1,4 +1,4 @@
-let  mines = 10;
+let mines = 10;
 const rows = 10,
       cols = 10;
 
@@ -11,14 +11,14 @@ const getRandomPosition = () => [
 
 let placedMines = 0;
 while (placedMines < mines) {
-    const [r, c] = getRandomPosition();
-    if (grid[r][c] !== -1) {
-        grid[r][c] = -1;
+    const [randomRow, randomCol] = getRandomPosition();
+    if (grid[randomRow][randomCol] !== -1) {
+        grid[randomRow][randomCol] = -1;
         placedMines++;
     }
 }
 
-const inBounds = (r, c) => r >= 0 && r < rows && c >= 0 && c < cols;
+const inBounds = (row, col) => row >= 0 && row < rows && col >= 0 && col < cols;
 
 const directions = [
     [-1, -1], [-1, 0], [-1, 1],
@@ -26,16 +26,18 @@ const directions = [
     [1, -1], [1, 0], [1, 1],
 ];
 
-for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-        if (grid[r][c] === -1) continue;
-        let count = 0;
-        for (const [dr, dc] of directions) {
-            const nr = r + dr, nc = c + dc;
-            if (inBounds(nr, nc) && grid[nr][nc] === -1) count++;
+for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+        if (grid[row][col] === -1) continue;
+        let neighborMineCount = 0;
+        for (const [deltaRow, deltaCol] of directions) {
+            const neighborRow = row + deltaRow, neighborCol = col + deltaCol;
+            if (inBounds(neighborRow, neighborCol) && grid[neighborRow][neighborCol] === -1) {
+                neighborMineCount++;
+            }
         }
-        grid[r][c] = count;
+        grid[row][col] = neighborMineCount;
     }
 }
 
-console.log(grid)
+console.log(grid);
