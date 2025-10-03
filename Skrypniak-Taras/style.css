@@ -1,11 +1,13 @@
-* {
+*
+{
     background-repeat: no-repeat;
     background-size: contain;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 }
 
-body {
+body
+{
     font-family: monospace;
     background-color: #c0c0c0;
     margin: 0;
@@ -13,11 +15,13 @@ body {
     box-sizing: border-box;
 }
 
-button {
+button
+{
     background-color: #c0c0c0;
 }
 
-#game-container {
+#game-container
+{
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -32,7 +36,8 @@ button {
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
 }
 
-#controls {
+#controls
+{
     display: flex;
     justify-content: space-between;
     padding: 4px;
@@ -44,11 +49,14 @@ button {
     margin-bottom: 15px
 }
 
-#timer, #flags {
+#timer,
+#flags
+{
     font-weight: bold;
 }
 
-#reset-button {
+#reset-button
+{
     border: none;
     background-color: #c0c0c0;
     background-image: url('assets/reset.png');
@@ -56,7 +64,24 @@ button {
     height: 24px;
 }
 
-#reset-button:before {
+#reset-button.scared
+{
+    background-image: url('assets/reset1.png');
+}
+
+#reset-button.loss
+{
+    background-image: url('assets/reset3.png');
+}
+
+#reset-button.win
+{
+    background-image: url('assets/reset2.png');
+}
+
+
+#reset-button:before
+{
     content: "";
     display: block;
     padding: 10px 10px;
@@ -68,11 +93,13 @@ button {
     border-color: #ffffff #808080 #808080 #ffffff;
 }
 
-#reset-button:active:before {
+#reset-button:active:before
+{
     border-color: #808080 #c0c0c0 #c0c0c0 #808080;
 }
 
-#game-field {
+#game-field
+{
     display: grid;
     grid-template-columns: repeat(10, 16px);
     grid-template-rows: repeat(10, 16px);
@@ -83,21 +110,24 @@ button {
     border-color: #808080 #ffffff #ffffff #808080;
 }
 
-.counter {
+.counter
+{
     display:flex;
     border-width: 1px;
     border-style: solid;
     border-color: #808080 #ffffff #ffffff #808080;
 }
 
-.cell {
+.cell
+{
     width: 16px;
     height: 16px;
 
     background-color: #c0c0c0;
 }
 
-.cell:before {
+.cell:before
+{
     content: "\a0";
     display: block;
     padding: 1px 0;
@@ -109,98 +139,143 @@ button {
     display: block;
 }
 
-.nomine:before, .revealed:before, .mine:before, .number:before, .cell:active:not(.flag):before {
+.done .flag:not(.mine):before,
+.done .mine:not(.flag):before,
+.revealed:before,
+.cell:active:not(.flag):before
+{
+    border-width: 1px;
+    padding: 2px 0;
     border-color: #808080 #c0c0c0 #c0c0c0 #808080;
-
 }
 
-.mine.revealed {
+.mine.revealed
+{
     background-color: #ff0000;
 }
 
-.mine.revealed:before, .mine.revealed:active:before {
-    border-right-color: #ff0000;
-    border-bottom-color: #ff0000;
+.mine.revealed:before,
+.mine.revealed:active:before
+{
+    border-right-color: #ff0000 !important;
+    border-bottom-color: #ff0000 !important;
 
 }
 
-.nomine {
+.done .flag
+{
     background-image: url('assets/nomine.png');
 }
 
-.flag {
+.flag,
+.done .flag.mine
+{
     background-image: url('assets/flag.png');
 }
 
-.mine {
+.done .mine
+{
     background-image: url('assets/mine.png');
 }
 
-.number-1 {
+.number-1.revealed
+{
     background-image: url('assets/1.png');
 }
 
-.number-2 {
+.number-2.revealed
+{
     background-image: url('assets/2.png');
 }
 
-.number-3 {
+.number-3.revealed
+{
     background-image: url('assets/3.png');
 }
 
-.number-4 {
+.number-4.revealed
+{
     background-image: url('assets/4.png');
 }
 
-.number-5 {
+.number-5.revealed
+{
     background-image: url('assets/5.png');
 }
 
-.number-6 {
+.number-6.revealed
+{
     background-image: url('assets/6.png');
 }
 
-.number-7 {
+.number-7.revealed
+{
     background-image: url('assets/7.png');
 }
 
-.number-8 {
+.number-8.revealed
+{
     background-image: url('assets/8.png');
 }
 
-.digit {
+.digit
+{
     width: 13px;
     height: 23px;
 }
 
-.digit-0 {
+.digit-0
+{
     background-image: url('assets/counter0.png');
 }
 
-.digit-1 {
+.digit-1
+{
     background-image: url('assets/counter1.png');
 }
-.digit-2 {
+
+.digit-2
+{
     background-image: url('assets/counter2.png');
 }
-.digit-3 {
+
+.digit-3
+{
     background-image: url('assets/counter3.png');
 }
-.digit-4 {
+
+.digit-4
+{
     background-image: url('assets/counter4.png');
 }
-.digit-5 {
+
+.digit-5
+{
     background-image: url('assets/counter5.png');
 }
-.digit-6 {
+
+.digit-6
+{
     background-image: url('assets/counter6.png');
 }
-.digit-7 {
+
+.digit-7
+{
     background-image: url('assets/counter7.png');
 }
-.digit-8 {
+
+.digit-8
+{
     background-image: url('assets/counter8.png');
 }
-.digit-9 {
+
+.digit-9
+{
     background-image: url('assets/counter9.png');
 }
+
+.digit-
+{
+    background-image: url('assets/counter-.png');
+}
+
