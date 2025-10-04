@@ -1,0 +1,144 @@
+:root {
+    --bg-color: #fafafa;
+    --panel-bg: #ffffff;
+    --border-color: #ccc;
+    --cell-closed: #e0e0e0;
+    --cell-open: #fdfdfd;
+    --mine-color: #d32f2f;
+    --flag-color: #fbc02d;
+    --text-main: #333;
+    --accent: #1976d2;
+    --accent-secondary: #388e3c;
+  }
+  
+  /* Общий стиль */
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg-color);
+    color: var(--text-main);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    padding: 20px;
+    min-height: 100vh;
+  }
+  
+  /* Заголовок */
+  h1 {
+    font-size: 2em;
+    margin-bottom: 15px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  
+  /* Контейнер и панель */
+  .game-board-wrapper {
+    width: fit-content;
+    background: var(--panel-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  
+  /* Хедер */
+  .game-board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--cell-closed);
+    padding: 15px 20px;
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  
+  /* Личильники */
+  .game-board-header__flags_left, .game-board-header__timer {
+    font-size: 1.1em;
+    color: var(--accent-secondary);
+  }
+  
+  /* Кнопка старт */
+  .start-button {
+    padding: 5px 20px;
+    border: none;
+    border-radius: 6px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  .start-button:hover {
+    background: #1565c0;
+    transform: scale(1.05);
+  }
+  
+  /* Рядки */
+  .game-board-wrapper__row {
+    display: flex;
+  }
+  
+  /* Клетки */
+  .game-board__cell {
+    width: 45px;
+    height: 45px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 600;
+    font-size: 1.3em;
+    user-select: none;
+  }
+  
+  /* Закрытая */
+  .closed-cell {
+    background: var(--cell-closed);
+    cursor: pointer;
+  }
+  .closed-cell:hover {
+    background: #d6d6d6;
+  }
+  
+  /* Открытая */
+  .open-cell {
+    background: var(--cell-open);
+  }
+  
+  /* Флажок */
+  .flagged-cell::after {
+    content: '🚩';
+    font-size: 1.1em;
+  }
+  
+  /* Неверный флажок */
+  .wrong-flag-cell::after {
+    content: '❌';
+    font-size: 1.1em;
+    color: red;
+  }
+  
+  /* Мины */
+  .mine-cell::after {
+    content: '💣';
+    font-size: 1.1em;
+  }
+  
+  /* Взорванная мина */
+  .mine-cell.exploded {
+    background: #ff4d4d;
+    color: #fff;
+    font-weight: bold;
+  }
+  
+  /* Числа */
+  .open-cell.number-1 { color: #1976d2; }
+  .open-cell.number-2 { color: #388e3c; }
+  .open-cell.number-3 { color: #d32f2f; }
+  .open-cell.number-4 { color: #7b1fa2; }
+  .open-cell.number-5 { color: #e65100; }
+  .open-cell.number-6 { color: #00897b; }
+  .open-cell.number-7 { color: #000000; }
+  .open-cell.number-8 { color: #616161; }
+  
