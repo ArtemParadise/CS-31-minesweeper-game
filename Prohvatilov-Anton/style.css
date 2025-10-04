@@ -154,7 +154,7 @@ body {
     background: #3d4142;
     position: relative;
 }
-
+.game-board-cell.mine::after,
 .game-board-cell.flag-mine::after,
 .game-board-cell.flag::after,
 .game-board-cell.flag-mine::after,
@@ -203,10 +203,6 @@ body {
 
 .game-board-cell.mine::after {
     content: "💣";
-    position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
 }
 
 .game-board-cell.mine-clicked {
@@ -217,10 +213,6 @@ body {
 
 .game-board-cell.mine-clicked::after {
     content: "💥";
-    position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
 }
 
 @keyframes shake {
