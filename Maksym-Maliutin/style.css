@@ -125,12 +125,6 @@
     font-size: 1.1em;
   }
   
-  /* Взорванная мина */
-  .mine-cell.exploded {
-    background: #ff4d4d;
-    color: #fff;
-    font-weight: bold;
-  }
   
   /* Числа */
   .open-cell.number-1 { color: #1976d2; }
