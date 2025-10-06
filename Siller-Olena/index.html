@@ -9,7 +9,6 @@
 <body>
     <div class="game-container">
         <h1>Minesweeper</h1>
-
         <div class="settings">
             <label>Board size: 
                 <input type="number" id="board-size-x" value="10" min="5" max="30"> x 
@@ -18,16 +17,42 @@
             <label>Bombs: 
                 <input type="number" id="bomb-count" value="10" min="1">
             </label>
-            <button onclick="startGame()">New Game</button>
-        </div>
-
+            <button id="startButton">Start</button>
+        </div>    
         <div class="status-bar">
             <div>🚩 Flags: <span id="bomb-counter">0</span> / <span id="bomb-total">0</span></div>
             <div>⏱ Time: <span id="timer">0</span> s</div>
         </div>
 
-        <div id="game-board"></div>
+        <div id="gameBoard" class="game-board"></div>
     </div>
-    <script src="actions.js"></script>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="modal">
+        <div class="modal-content">
+            <img src="looser.jpg" alt="Looser" style="width:130px;height:100px;"> 
+            <h2>Game Over!</h2>
+            <h4>You hit a bomb!</h4>
+            <div>
+                <button id="restart-button">Restart Game</button>
+                <button id="close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Win Modal -->
+    <div id="game-win-modal" class="modal">
+        <div class="modal-content">
+            <img src="trophy.png" alt="Trophy" style="width:50px;height:50px;"> 
+            <h2>You Win!</h2>
+            <h4>You cleared the board!</h4>
+            <div>
+                <button id="restart-win-button">Restart Game</button>
+                <button id="close-win-modal">Close</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
 </body>
 </html>
