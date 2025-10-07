@@ -138,7 +138,7 @@ function toggleFlag(row, col) {
   if (checkWin()) {
     gameOver = true;
     stopTimer();
-    displayWinMessage(); // Zeigt die Nachricht "You Win!"
+    displayWinMessage(); // Show message "You Win!"
   }
 }
 
@@ -153,11 +153,11 @@ function renderBoard() {
       const cell = cells[index];
       index++;
 
-      // Wenn die Zelle aufgedeckt wurde
+      // If cell is opened
       if (revealed[row][col]) {
         if (field[row][col] === 'M') {
           cell.classList.add('mine');
-          cell.textContent = '💣'; // Zeigt das Bomben-Symbol
+          cell.textContent = '💣'; // Show bomb symbol
         } else {
           cell.classList.add('revealed');
           if (field[row][col] > 0) {
@@ -165,11 +165,11 @@ function renderBoard() {
           }
         }
       } else if (flags[row][col]) {
-        // Wenn ein Flag gesetzt wurde
+        // If a flag is set
         cell.classList.add('flag');
         cell.textContent = '🚩';
       } else {
-        // Wenn die Zelle weder aufgedeckt noch ein Flag ist
+        // if the cell has no flag and is not opened
         cell.classList.remove('revealed', 'mine', 'flag');
         cell.textContent = '';
       }
@@ -183,7 +183,7 @@ function startTimer() {
 
   timer = setInterval(() => {
     seconds++;
-    document.getElementById("timer").textContent = `Zeit: ${seconds}`;
+    document.getElementById("timer").textContent = ` ${seconds}`;
     
     // Debug tool: Log timer update
     //console.log(`Timer: ${seconds} seconds`);
