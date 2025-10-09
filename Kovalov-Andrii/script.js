@@ -53,11 +53,11 @@ function initGame(rows = 10, cols = 10, mines = 15) {
 
 function countNeighborMines(game, row, col) {
   let count = 0;
-  for (let dRow = -1; dRow <= 1; dRow++) {
-    for (let dCol = -1; dCol <= 1; dCol++) {
-      if (dRow === 0 && dCol === 0) continue;
-      const neighborRow = row + dRow;
-      const neighborCol = col + dCol;
+  for (let rowStep = -1; rowStep <= 1; rowStep++) {
+    for (let colStep = -1; colStep <= 1; colStep++) {
+      if (rowStep === 0 && colStep === 0) continue;
+      const neighborRow = row + rowStep;
+      const neighborCol = col + colStep;
       if (neighborRow >= 0 && neighborRow < game.rows && neighborCol >= 0 && neighborCol < game.cols) {
         if (game.field[neighborRow][neighborCol].hasMine) count++;
       }
