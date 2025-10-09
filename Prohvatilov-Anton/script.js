@@ -12,87 +12,87 @@ document.addEventListener("DOMContentLoaded", () => {
   function createGame(rows = 16, cols = 16, minesCount = 40) {
     const game = { rows, cols, minesCount, state: "in_progress", board: [] };
 
-    for (let r = 0; r < rows; r++) {
-      const row = [];
-      for (let c = 0; c < cols; c++) row.push(createCell());
-      game.board.push(row);
+    for (let row = 0; row < rows; row++) {
+      const boardRow = [];
+      for (let col = 0; col < cols; col++) boardRow.push(createCell());
+      game.board.push(boardRow);
     }
 
-    function countAdjacentMines(r, c) {
-      return directions.reduce((count, [dr, dc]) => {
-        const nr = r + dr, nc = c + dc;
-        return (nr >= 0 && nr < rows && nc >= 0 && nc < cols && game.board[nr][nc].hasMine) ? count + 1 : count;
+    function countAdjacentMines(row, col) {
+      return directions.reduce((count, [deltaRow, deltaCol]) => {
+        const newRow = row + deltaRow, newCol = col + deltaCol;
+        return (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && game.board[newRow][newCol].hasMine) ? count + 1 : count;
       }, 0);
     }
 
     let placedMines = 0, attempts = 0;
     while (placedMines < minesCount && attempts < minesCount * 20) {
-      const r = Math.floor(Math.random() * rows);
-      const c = Math.floor(Math.random() * cols);
-      if (!game.board[r][c].hasMine) {
-        game.board[r][c].hasMine = true;
-        let valid = true;
-        for (let rr = 0; rr < rows && valid; rr++) {
-          for (let cc = 0; cc < cols; cc++) {
-            if (!game.board[rr][cc].hasMine && countAdjacentMines(rr, cc) > 3) {
-              valid = false;
+      const randomRow = Math.floor(Math.random() * rows);
+      const randomCol = Math.floor(Math.random() * cols);
+      if (!game.board[randomRow][randomCol].hasMine) {
+        game.board[randomRow][randomCol].hasMine = true;
+        let isValidPlacement = true;
+        for (let checkRow = 0; checkRow < rows && isValidPlacement; checkRow++) {
+          for (let checkCol = 0; checkCol < cols; checkCol++) {
+            if (!game.board[checkRow][checkCol].hasMine && countAdjacentMines(checkRow, checkCol) > 3) {
+              isValidPlacement = false;
               break;
             }
           }
         }
-        if (valid) placedMines++; else game.board[r][c].hasMine = false;
+        if (isValidPlacement) placedMines++; else game.board[randomRow][randomCol].hasMine = false;
       }
       attempts++;
     }
 
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        if (!game.board[r][c].hasMine) game.board[r][c].adjacentMines = countAdjacentMines(r, c);
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        if (!game.board[row][col].hasMine) game.board[row][col].adjacentMines = countAdjacentMines(row, col);
       }
     }
     return game;
   }
 
-  function floodOpen(game, r, c) {
-    const cell = game.board[r][c];
+  function floodOpen(game, row, col) {
+    const cell = game.board[row][col];
     if (cell.state !== "closed" || cell.hasMine) return;
     cell.state = "open";
     if (cell.adjacentMines === 0) {
-      for (let [dr, dc] of directions) {
-        const nr = r + dr, nc = c + dc;
-        if (nr >= 0 && nr < game.rows && nc >= 0 && nc < game.cols) floodOpen(game, nr, nc);
+      for (let [deltaRow, deltaCol] of directions) {
+        const newRow = row + deltaRow, newCol = col + deltaCol;
+        if (newRow >= 0 && newRow < game.rows && newCol >= 0 && newCol < game.cols) floodOpen(game, newRow, newCol);
       }
     }
   }
 
   function renderBoard(game) {
-    const board = document.querySelector('.game-board');
-    board.innerHTML = "";
-    for (let r = 0; r < game.rows; r++) {
-      for (let c = 0; c < game.cols; c++) {
-        const cellData = game.board[r][c];
-        const cell = document.createElement("div");
-        cell.classList.add("game-board-cell");
-        cell.textContent = "";
+    const boardElement = document.querySelector('.game-board');
+    boardElement.innerHTML = "";
+    for (let row = 0; row < game.rows; row++) {
+      for (let col = 0; col < game.cols; col++) {
+        const cellData = game.board[row][col];
+        const cellElement = document.createElement("div");
+        cellElement.classList.add("game-board-cell");
+        cellElement.textContent = "";
 
         if (cellData.state === "closed") {
-          cell.classList.add("closed");
+          cellElement.classList.add("closed");
         } else if (cellData.state === "flagged") {
-          cell.classList.add("flagged");
-          cell.textContent = "🚩";
+          cellElement.classList.add("flagged");
+          cellElement.textContent = "🚩";
         } else if (cellData.state === "open") {
           if (cellData.hasMine) {
-            cell.classList.add("mine");
-            cell.textContent = "💣";
+            cellElement.classList.add("mine");
+            cellElement.textContent = "💣";
           } else if (cellData.adjacentMines > 0) {
-            cell.classList.add(`number-${cellData.adjacentMines}`);
-            cell.textContent = cellData.adjacentMines;
+            cellElement.classList.add(`number-${cellData.adjacentMines}`);
+            cellElement.textContent = cellData.adjacentMines;
           } else {
-            cell.classList.add("open");
+            cellElement.classList.add("open");
           }
         }
 
-        cell.addEventListener("click", () => {
+        cellElement.addEventListener("click", () => {
           if (game.state !== "in_progress") return;
           if (cellData.hasMine) {
             cellData.state = "open";
@@ -100,50 +100,50 @@ document.addEventListener("DOMContentLoaded", () => {
             revealMines(game);
             alert("💥 Ти програв!");
           } else {
-            floodOpen(game, r, c);
+            floodOpen(game, row, col);
             checkVictory(game);
           }
           renderBoard(game);
         });
 
-        cell.addEventListener("contextmenu", (e) => {
-          e.preventDefault();
+        cellElement.addEventListener("contextmenu", (event) => {
+          event.preventDefault();
           if (game.state !== "in_progress") return;
           cellData.state = cellData.state === "closed" ? "flagged" : cellData.state === "flagged" ? "closed" : cellData.state;
           renderBoard(game);
         });
 
-        board.appendChild(cell);
+        boardElement.appendChild(cellElement);
       }
     }
   }
 
   function revealMines(game) {
-    for (let r = 0; r < game.rows; r++) {
-      for (let c = 0; c < game.cols; c++) {
-        if (game.board[r][c].hasMine) game.board[r][c].state = "open";
+    for (let row = 0; row < game.rows; row++) {
+      for (let col = 0; col < game.cols; col++) {
+        if (game.board[row][col].hasMine) game.board[row][col].state = "open";
       }
     }
   }
 
   function checkVictory(game) {
-    let closedCells = 0;
-    for (let r = 0; r < game.rows; r++) {
-      for (let c = 0; c < game.cols; c++) {
-        if (!game.board[r][c].hasMine && game.board[r][c].state === "closed") closedCells++;
+    let closedNonMineCells = 0;
+    for (let row = 0; row < game.rows; row++) {
+      for (let col = 0; col < game.cols; col++) {
+        if (!game.board[row][col].hasMine && game.board[row][col].state === "closed") closedNonMineCells++;
       }
     }
-    if (closedCells === 0) {
+    if (closedNonMineCells === 0) {
       game.state = "victory";
       alert("🎉 Перемога!");
     }
   }
 
-  let game = createGame(16, 16, 40);
-  renderBoard(game);
+  let currentGame = createGame(16, 16, 40);
+  renderBoard(currentGame);
 
   document.querySelector(".game-board-button").addEventListener("click", () => {
-    game = createGame(16, 16, 40);
-    renderBoard(game);
+    currentGame = createGame(16, 16, 40);
+    renderBoard(currentGame);
   });
 });
