@@ -21,29 +21,29 @@ function initGame(rows = 10, cols = 10, mines = 15) {
   const game = createGame(rows, cols, mines);
 
   // створюємо поле
-  for (let r = 0; r < rows; r++) {
-    game.field[r] = [];
-    for (let c = 0; c < cols; c++) {
-      game.field[r][c] = createCell();
+  for (let row = 0; row < rows; row++) {
+    game.field[row] = [];
+    for (let col = 0; col < cols; col++) {
+      game.field[row][col] = createCell();
     }
   }
 
   // розставляємо міни випадково
   let placed = 0;
   while (placed < mines) {
-    const r = Math.floor(Math.random() * rows);
-    const c = Math.floor(Math.random() * cols);
-    if (!game.field[r][c].hasMine) {
-      game.field[r][c].hasMine = true;
+    const row = Math.floor(Math.random() * rows);
+    const col = Math.floor(Math.random() * cols);
+    if (!game.field[row][col].hasMine) {
+      game.field[row][col].hasMine = true;
       placed++;
     }
   }
 
   // рахуємо кількість сусідніх мін
-  for (let r = 0; r < rows; r++) {
-    for (let c = 0; c < cols; c++) {
-      if (!game.field[r][c].hasMine) {
-        game.field[r][c].neighborMines = countNeighborMines(game, r, c);
+  for (let row = 0; row < rows; row++) {
+    for (let col = 0; col < cols; col++) {
+      if (!game.field[row][col].hasMine) {
+        game.field[row][col].neighborMines = countNeighborMines(game, row, col);
       }
     }
   }
@@ -53,13 +53,13 @@ function initGame(rows = 10, cols = 10, mines = 15) {
 
 function countNeighborMines(game, row, col) {
   let count = 0;
-  for (let dr = -1; dr <= 1; dr++) {
-    for (let dc = -1; dc <= 1; dc++) {
-      if (dr === 0 && dc === 0) continue;
-      const nr = row + dr;
-      const nc = col + dc;
-      if (nr >= 0 && nr < game.rows && nc >= 0 && nc < game.cols) {
-        if (game.field[nr][nc].hasMine) count++;
+  for (let dRow = -1; dRow <= 1; dRow++) {
+    for (let dCol = -1; dCol <= 1; dCol++) {
+      if (dRow === 0 && dCol === 0) continue;
+      const neighborRow = row + dRow;
+      const neighborCol = col + dCol;
+      if (neighborRow >= 0 && neighborRow < game.rows && neighborCol >= 0 && neighborCol < game.cols) {
+        if (game.field[neighborRow][neighborCol].hasMine) count++;
       }
     }
   }
@@ -70,9 +70,9 @@ function renderGame(game) {
   const grid = document.querySelector(".grid");
   grid.innerHTML = ""; 
 
-  for (let r = 0; r < game.rows; r++) {
-    for (let c = 0; c < game.cols; c++) {
-      const cell = game.field[r][c];
+  for (let row = 0; row < game.rows; row++) {
+    for (let col = 0; col < game.cols; col++) {
+      const cell = game.field[row][col];
       const div = document.createElement("div");
       div.classList.add("cell", cell.state);
 
