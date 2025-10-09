@@ -19,7 +19,7 @@ const CELL_STATE = {
       this.rows = rows;
       this.cols = cols;
       this.mineCount = mineCount;
-      this.board = this.createBoard(rows, cols);
+      this.gameBoard = this.createBoard(rows, cols);
       this.flags = 0;
       this.revealedCells = 0;
       this.status = "ready"; // ready | playing | won | lost
@@ -27,12 +27,12 @@ const CELL_STATE = {
   
     createBoard(rows, cols) {
       const board = [];
-      for (let r = 0; r < rows; r++) {
-        const row = [];
-        for (let c = 0; c < cols; c++) {
-          row.push(new Cell());
+      for (let row = 0; row < rows; row++) {
+        const rowArray = [];
+        for (let col = 0; col < cols; col++) {
+          rowArray.push(new Cell());
         }
-        board.push(row);
+        board.push(rowArray);
       }
       return board;
     }
@@ -40,69 +40,82 @@ const CELL_STATE = {
   
   // ==== ГЕНЕРАЦІЯ ПОЛЯ ====
   function generateField(rows, cols, mineCount) {
-    const game = new GameState(rows, cols, mineCount);
+    const gameState = new GameState(rows, cols, mineCount);
   
     let minesPlaced = 0;
     while (minesPlaced < mineCount) {
-      const r = Math.floor(Math.random() * rows);
-      const c = Math.floor(Math.random() * cols);
-      if (!game.board[r][c].hasMine) {
-        game.board[r][c].hasMine = true;
+      const row = Math.floor(Math.random() * rows);
+      const col = Math.floor(Math.random() * cols);
+      if (!gameState.gameBoard[row][col].hasMine) {
+        gameState.gameBoard[row][col].hasMine = true;
         minesPlaced++;
       }
     }
   
-    computeNeighborCounts(game.board);
-    return game;
+    computeNeighborCounts(gameState.gameBoard);
+    return gameState;
   }
   
-  function computeNeighborCounts(board) {
-    const rows = board.length;
-    const cols = board[0].length;
+  function computeNeighborCounts(gameBoard) {
+    const rows = gameBoard.length;
+    const cols = gameBoard[0].length;
   
-    function countNeighbors(r, c) {
+    function countNeighbors(row, col) {
       let count = 0;
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          if (dr === 0 && dc === 0) continue;
-          const nr = r + dr;
-          const nc = c + dc;
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) {
-            if (board[nr][nc].hasMine) count++;
+      for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+        for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+          if (deltaRow === 0 && deltaCol === 0) continue;
+          const neighborRow = row + deltaRow;
+          const neighborCol = col + deltaCol;
+          if (
+            neighborRow >= 0 &&
+            neighborRow < rows &&
+            neighborCol >= 0 &&
+            neighborCol < cols
+          ) {
+            if (gameBoard[neighborRow][neighborCol].hasMine) count++;
           }
         }
       }
       return count;
     }
   
-    for (let r = 0; r < rows; r++) {
-      for (let c = 0; c < cols; c++) {
-        board[r][c].neighborCount = countNeighbors(r, c);
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        gameBoard[row][col].neighborCount = countNeighbors(row, col);
       }
     }
   }
   
   // ==== ІГРОВА ЛОГІКА ====
-  function openCell(game, r, c) {
-    const cell = game.board[r][c];
+  function revealCell(gameState, row, col) {
+    const cell = gameState.gameBoard[row][col];
     if (cell.state !== CELL_STATE.CLOSED) return;
     cell.state = CELL_STATE.OPEN;
-    game.revealedCells++;
+    gameState.revealedCells++;
   
     if (cell.hasMine) {
-      game.status = "lost";
+      gameState.status = "lost";
       return;
     }
   
     if (cell.neighborCount === 0) {
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          if (dr === 0 && dc === 0) continue;
-          const nr = r + dr;
-          const nc = c + dc;
-          if (nr >= 0 && nr < game.rows && nc >= 0 && nc < game.cols) {
-            if (game.board[nr][nc].state === CELL_STATE.CLOSED) {
-              openCell(game, nr, nc);
+      for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+        for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+          if (deltaRow === 0 && deltaCol === 0) continue;
+          const neighborRow = row + deltaRow;
+          const neighborCol = col + deltaCol;
+          if (
+            neighborRow >= 0 &&
+            neighborRow < gameState.rows &&
+            neighborCol >= 0 &&
+            neighborCol < gameState.cols
+          ) {
+            if (
+              gameState.gameBoard[neighborRow][neighborCol].state ===
+              CELL_STATE.CLOSED
+            ) {
+              revealCell(gameState, neighborRow, neighborCol);
             }
           }
         }
@@ -110,27 +123,31 @@ const CELL_STATE = {
     }
   }
   
-  function toggleFlag(game, r, c) {
-    const cell = game.board[r][c];
+  function toggleFlagOnCell(gameState, row, col) {
+    const cell = gameState.gameBoard[row][col];
     if (cell.state === CELL_STATE.CLOSED) {
-      const flagsPlaced = game.board.flat().filter(c => c.state === CELL_STATE.FLAGGED).length;
-      if (flagsPlaced >= game.mineCount) return;
+      const flagsPlaced = gameState.gameBoard
+        .flat()
+        .filter((c) => c.state === CELL_STATE.FLAGGED).length;
+      if (flagsPlaced >= gameState.mineCount) return;
       cell.state = CELL_STATE.FLAGGED;
     } else if (cell.state === CELL_STATE.FLAGGED) {
       cell.state = CELL_STATE.CLOSED;
     }
-    updateFlagsCounter();
+    updateFlagsCounter(gameState);
   }
   
   // ==== UI ЛОГІКА ====
-  const boardWrapper = document.querySelector(".game-board");
-  const headerFlags = document.querySelector(".game-board-header__flags_left");
-  const headerTimer = document.querySelector(".game-board-header__timer");
-  const startButton = document.querySelector(".start-button");
+  const boardWrapperElement = document.querySelector(".game-board");
+  const flagsCounterElement = document.querySelector(
+    ".game-board-header__flags_left"
+  );
+  const timerElement = document.querySelector(".game-board-header__timer");
+  const startGameButton = document.querySelector(".start-button");
   
-  let game = null;
-  let uiTimerId = null;
-  let uiTimeElapsed = 0;
+  let gameState = null;
+  let timerId = null;
+  let elapsedTime = 0;
   
   function formatTime(seconds) {
     const m = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -141,136 +158,135 @@ const CELL_STATE = {
   // ==== Старт/рестарт гри ====
   function startGame() {
     stopUITimer();
-    uiTimeElapsed = 0;
-    headerTimer.textContent = "00:00";
+    elapsedTime = 0;
+    timerElement.textContent = "00:00";
   
-    // Генеруємо нове поле
-    game = generateField(10, 10, 10);
-    game.status = "playing";
+    gameState = generateField(10, 10, 10);
+    gameState.status = "playing";
   
-    headerFlags.textContent = String(game.mineCount).padStart(3, "0");
-    renderBoard(game);
+    flagsCounterElement.textContent = String(gameState.mineCount).padStart(3, "0");
+    renderGameBoard(gameState);
     startUITimer();
   }
   
   // ==== Рендеринг поля ====
-  function renderBoard(game) {
-    boardWrapper.innerHTML = "";
+  function renderGameBoard(gameState) {
+    boardWrapperElement.innerHTML = "";
   
-    for (let r = 0; r < game.rows; r++) {
-      const rowDiv = document.createElement("div");
-      rowDiv.classList.add("game-board-wrapper__row");
+    for (let row = 0; row < gameState.rows; row++) {
+      const rowElement = document.createElement("div");
+      rowElement.classList.add("game-board-wrapper__row");
   
-      for (let c = 0; c < game.cols; c++) {
-        const cell = game.board[r][c];
-        const cellDiv = document.createElement("div");
-        cellDiv.classList.add("game-board__cell");
+      for (let col = 0; col < gameState.cols; col++) {
+        const cell = gameState.gameBoard[row][col];
+        const cellElement = document.createElement("div");
+        cellElement.classList.add("game-board__cell");
   
         if (cell.state === CELL_STATE.CLOSED) {
-          cellDiv.classList.add("closed-cell");
+          cellElement.classList.add("closed-cell");
         } else if (cell.state === CELL_STATE.FLAGGED) {
-          cellDiv.classList.add("flagged-cell");
-          if (game.status === "lost" && !cell.hasMine) {
-            cellDiv.classList.add("wrong-flag-cell");
+          cellElement.classList.add("flagged-cell");
+          if (gameState.status === "lost" && !cell.hasMine) {
+            cellElement.classList.add("wrong-flag-cell");
           }
         } else if (cell.state === CELL_STATE.OPEN) {
-          cellDiv.classList.add("open-cell");
+          cellElement.classList.add("open-cell");
           if (cell.hasMine) {
-            cellDiv.classList.add("mine-cell");
+            cellElement.classList.add("mine-cell");
           } else if (cell.neighborCount > 0) {
-            cellDiv.classList.add(`number-${cell.neighborCount}`);
-            cellDiv.textContent = cell.neighborCount;
+            cellElement.classList.add(`number-${cell.neighborCount}`);
+            cellElement.textContent = cell.neighborCount;
           }
         }
   
-        cellDiv.addEventListener("click", () => {
-          if (game.status !== "playing") return;
-          openCell(game, r, c);
-          checkGameStatus();
-          renderBoard(game);
+        cellElement.addEventListener("click", () => {
+          if (gameState.status !== "playing") return;
+          revealCell(gameState, row, col);
+          updateGameStatus();
+          renderGameBoard(gameState);
         });
   
-        cellDiv.addEventListener("contextmenu", (e) => {
+        cellElement.addEventListener("contextmenu", (e) => {
           e.preventDefault();
-          if (game.status !== "playing") return;
-          toggleFlag(game, r, c);
-          renderBoard(game);
+          if (gameState.status !== "playing") return;
+          toggleFlagOnCell(gameState, row, col);
+          renderGameBoard(gameState);
         });
   
-        rowDiv.appendChild(cellDiv);
+        rowElement.appendChild(cellElement);
       }
-      boardWrapper.appendChild(rowDiv);
+      boardWrapperElement.appendChild(rowElement);
     }
   }
   
   // ==== Оновлення лічильника флагів ====
-  function updateFlagsCounter() {
+  function updateFlagsCounter(gameState) {
     let placedFlags = 0;
-    for (let r = 0; r < game.rows; r++) {
-      for (let c = 0; c < game.cols; c++) {
-        if (game.board[r][c].state === CELL_STATE.FLAGGED) placedFlags++;
+    for (let row = 0; row < gameState.rows; row++) {
+      for (let col = 0; col < gameState.cols; col++) {
+        if (gameState.gameBoard[row][col].state === CELL_STATE.FLAGGED) placedFlags++;
       }
     }
-    const flagsLeft = game.mineCount - placedFlags;
-    headerFlags.textContent = String(flagsLeft).padStart(3, "0");
+    const flagsLeft = gameState.mineCount - placedFlags;
+    flagsCounterElement.textContent = String(flagsLeft).padStart(3, "0");
   }
   
   // ==== Таймер ====
   function startUITimer() {
-    if (uiTimerId) return;
-    uiTimerId = setInterval(() => {
-      uiTimeElapsed++;
-      headerTimer.textContent = formatTime(uiTimeElapsed);
+    if (timerId) return;
+    timerId = setInterval(() => {
+      elapsedTime++;
+      timerElement.textContent = formatTime(elapsedTime);
     }, 1000);
   }
   
   function stopUITimer() {
-    clearInterval(uiTimerId);
-    uiTimerId = null;
+    clearInterval(timerId);
+    timerId = null;
   }
   
   // ==== Перевірка стану гри ====
-  function checkGameStatus() {
-    if (game.status === "lost") {
+  function updateGameStatus() {
+    if (gameState.status === "lost") {
       stopUITimer();
       revealAllMines();
-      startButton.textContent = "Restart";
+      startGameButton.textContent = "Restart";
       alert("Game Over!");
-    } else if (isWin()) {
-      game.status = "won";
+    } else if (checkWinCondition()) {
+      gameState.status = "won";
       stopUITimer();
-      startButton.textContent = "Restart";
+      startGameButton.textContent = "Restart";
       alert("You Win!");
     }
   }
   
-  function isWin() {
+  function checkWinCondition() {
     let closedOrFlagged = 0;
-    for (let r = 0; r < game.rows; r++) {
-      for (let c = 0; c < game.cols; c++) {
-        const cell = game.board[r][c];
+    for (let row = 0; row < gameState.rows; row++) {
+      for (let col = 0; col < gameState.cols; col++) {
+        const cell = gameState.gameBoard[row][col];
         if (cell.state !== CELL_STATE.OPEN) closedOrFlagged++;
       }
     }
-    return closedOrFlagged === game.mineCount;
+    return closedOrFlagged === gameState.mineCount;
   }
   
   function revealAllMines() {
-    for (let r = 0; r < game.rows; r++) {
-      for (let c = 0; c < game.cols; c++) {
-        const cell = game.board[r][c];
+    for (let row = 0; row < gameState.rows; row++) {
+      for (let col = 0; col < gameState.cols; col++) {
+        const cell = gameState.gameBoard[row][col];
         if (cell.hasMine) {
           cell.state = CELL_STATE.OPEN;
         }
       }
     }
-    renderBoard(game);
+    renderGameBoard(gameState);
   }
   
   // ==== Прив'язка кнопки Start ====
-  startButton.addEventListener("click", startGame);
+  startGameButton.addEventListener("click", startGame);
   
-  // ==== Генеруємо поле одразу при завантаженні (видно, але неактивно) ====
-  game = generateField(10, 10, 10);
-  renderBoard(game);
+  // ==== Генеруємо поле одразу при завантаженні ====
+  gameState = generateField(10, 10, 10);
+  renderGameBoard(gameState);
   
