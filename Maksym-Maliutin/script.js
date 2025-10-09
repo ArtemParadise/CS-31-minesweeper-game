@@ -28,24 +28,24 @@ class GameState {
 // --- Створити пусте поле ---
 function createEmptyBoard(rows, cols) {
     const board = new Array(rows);
-    for (let r = 0; r < rows; r++) {
-        board[r] = new Array(cols);
-        for (let c = 0; c < cols; c++) {
-            board[r][c] = createCell();
+    for (let row = 0; row < rows; row++) {
+        board[row] = new Array(cols);
+        for (let col = 0; col < cols; col++) {
+            board[row][col] = createCell();
         }
     }
     return board;
 }
 
 // --- Перевірка валідності позиції ---
-function isValidPos(board, r, c) {
-    return r >= 0 && r < board.length && c >= 0 && c < board[0].length;
+function isValidPosition(board, row, col) {
+    return row >= 0 && row < board.length && col >= 0 && col < board[0].length;
 }
 
 // --- Поставити міни у задані позиції ---
 function placeMinesAtPositions(board, positions = []) {
-    for (const [r, c] of positions) {
-        if (isValidPos(board, r, c)) board[r][c].hasMine = true;
+    for (const [row, col] of positions) {
+        if (isValidPosition(board, row, col)) board[row][col].hasMine = true;
     }
 }
 
@@ -54,22 +54,27 @@ function computeNeighborCounts(board) {
     const rows = board.length;
     const cols = board[0].length;
 
-    for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-            if (board[r][c].hasMine) {
-                board[r][c].neighborCount = null;
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            const cell = board[row][col];
+
+            if (cell.hasMine) {
+                cell.neighborCount = null;
                 continue;
             }
+
             let count = 0;
-            for (let dr = -1; dr <= 1; dr++) {
-                for (let dc = -1; dc <= 1; dc++) {
-                    if (dr === 0 && dc === 0) continue;
-                    const nr = r + dr;
-                    const nc = c + dc;
-                    if (isValidPos(board, nr, nc) && board[nr][nc].hasMine) count++;
+            for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+                for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+                    if (deltaRow === 0 && deltaCol === 0) continue;
+                    const neighborRow = row + deltaRow;
+                    const neighborCol = col + deltaCol;
+                    if (isValidPosition(board, neighborRow, neighborCol) && board[neighborRow][neighborCol].hasMine) {
+                        count++;
+                    }
                 }
             }
-            board[r][c].neighborCount = count;
+            cell.neighborCount = count;
         }
     }
 }
@@ -87,10 +92,10 @@ function printBoardToConsole(board) {
     const rows = board.length;
     const cols = board[0].length;
     let out = '\n';
-    for (let r = 0; r < rows; r++) {
+    for (let row = 0; row < rows; row++) {
         let line = '';
-        for (let c = 0; c < cols; c++) {
-            const cell = board[r][c];
+        for (let col = 0; col < cols; col++) {
+            const cell = board[row][col];
             if (cell.hasMine) line += '💣';
             else line += ' ' + cell.neighborCount + ' ';
         }
@@ -109,15 +114,18 @@ console.log({ rows: testGame.rows, cols: testGame.cols, mineCount: testGame.mine
 printBoardToConsole(testGame.board);
 
 // --- Нові функції для логіки гри ---
+
 // Генерація випадкового поля
 function generateField(rows = 10, cols = 10, mineCount = 10) {
     const game = new GameState(rows, cols, mineCount);
     let minesPlaced = 0;
+
     while (minesPlaced < mineCount) {
-        const r = Math.floor(Math.random() * rows);
-        const c = Math.floor(Math.random() * cols);
-        if (!game.board[r][c].hasMine) {
-            game.board[r][c].hasMine = true;
+        const randomRow = Math.floor(Math.random() * rows);
+        const randomCol = Math.floor(Math.random() * cols);
+
+        if (!game.board[randomRow][randomCol].hasMine) {
+            game.board[randomRow][randomCol].hasMine = true;
             minesPlaced++;
         }
     }
@@ -127,43 +135,54 @@ function generateField(rows = 10, cols = 10, mineCount = 10) {
 
 // Підрахунок мін навколо клітинки
 function countNeighbourMines(board, row, col) {
-    if (!isValidPos(board, row, col)) return 0;
+    if (!isValidPosition(board, row, col)) return 0;
     return board[row][col].neighborCount;
 }
 
 // Відкриття клітинки
 function openCell(game, row, col) {
-    if (!isValidPos(game.board, row, col)) return;
+    if (!isValidPosition(game.board, row, col)) return;
     const cell = game.board[row][col];
+
     if (cell.state !== CELL_STATE.CLOSED) return;
+
     if (cell.hasMine) {
         cell.state = CELL_STATE.OPEN;
         game.status = 'lost';
         return;
     }
-    function reveal(r, c) {
-        if (!isValidPos(game.board, r, c)) return;
-        const ccell = game.board[r][c];
-        if (ccell.state === CELL_STATE.OPEN || ccell.state === CELL_STATE.FLAGGED) return;
-        ccell.state = CELL_STATE.OPEN;
-        if (ccell.neighborCount === 0) {
-            for (let dr = -1; dr <= 1; dr++) {
-                for (let dc = -1; dc <= 1; dc++) {
-                    if (dr === 0 && dc === 0) continue;
-                    reveal(r + dr, c + dc);
+
+    function reveal(currentRow, currentCol) {
+        if (!isValidPosition(game.board, currentRow, currentCol)) return;
+        const currentCell = game.board[currentRow][currentCol];
+
+        if (currentCell.state === CELL_STATE.OPEN || currentCell.state === CELL_STATE.FLAGGED) return;
+
+        currentCell.state = CELL_STATE.OPEN;
+
+        if (currentCell.neighborCount === 0) {
+            for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+                for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+                    if (deltaRow === 0 && deltaCol === 0) continue;
+                    reveal(currentRow + deltaRow, currentCol + deltaCol);
                 }
             }
         }
     }
+
     reveal(row, col);
 }
 
 // Встановлення / зняття прапорця
 function toggleFlag(game, row, col) {
-    if (!isValidPos(game.board, row, col)) return;
+    if (!isValidPosition(game.board, row, col)) return;
     const cell = game.board[row][col];
-    if (cell.state === CELL_STATE.CLOSED) cell.state = CELL_STATE.FLAGGED;
-    else if (cell.state === CELL_STATE.FLAGGED) cell.state = CELL_STATE.CLOSED;
+
+    if (cell.state === CELL_STATE.CLOSED) {
+        cell.state = CELL_STATE.FLAGGED;
+    } else if (cell.state === CELL_STATE.FLAGGED) {
+        cell.state = CELL_STATE.CLOSED;
+    }
 }
 
 // Таймер
@@ -201,6 +220,7 @@ window.minesweeperGame = {
     stopTimer,
     timeElapsed
 };
+
 
 // --- Як тестувати реалізовані функції ---
 
