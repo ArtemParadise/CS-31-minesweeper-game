@@ -1,14 +1,44 @@
+:root {
+    --primary-bg: #f5f5f5;
+    --white-bg: #ffffff;
+    --light-gray: #f8f9fa;
+    --medium-gray: #6c757d;
+    --dark-gray: #5a6268;
+    --border-gray: #dee2e6;
+    --border-light: #ced4da;
+    --text-primary: #333;
+    --blue-primary: #007bff;
+    --blue-hover: #0056b3;
+    --blue-active: #004494;
+    --yellow-warning: #ffc107;
+    --yellow-dark: #ffb300;
+    --red-danger: #dc3545;
+    --green-success: #28a745;
+    --red-light: #f8d7da;
+    
+    --border-radius-large: 16px;
+    --border-radius-medium: 12px;
+    --border-radius-small: 8px;
+    --border-radius-tiny: 4px;
+    
+    --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --border-width: 2px;
+    --border-thin: 1px;
+    
+    --font-family: 'Segoe UI', 'Arial', sans-serif;
+}
+
 body {
-    border-radius: 16px;
+    border-radius: var(--border-radius-large);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
-    font-family: 'Segoe UI', 'Arial', sans-serif;
-    color: #222;
+    background: var(--primary-bg);
+    font-family: var(--font-family);
+    color: var(--text-primary);
     font-size: 1.1rem;
     letter-spacing: 0.02em;
     box-sizing: border-box;
@@ -16,15 +46,16 @@ body {
 }
 
 .game-board-wrapper{
-    border-radius: 16px;
+    border-radius: var(--border-radius-large);
     width: 1000px;
     height: 1000px;
-    background-color: #bdbdbd;
-    box-shadow: #222 0 8px 32px 0, #222 0 1.5px 4px 0;
+    background: var(--white-bg);
+    box-shadow: var(--shadow-light);
+    border: var(--border-width) solid #e0e0e0;
 }
 
 .game-board-header{
-    border-radius: 16px;
+    border-radius: var(--border-radius-medium);
     margin-left: 25px;
     margin-top: 25px;
     display: flex;
@@ -32,167 +63,133 @@ body {
     align-items: center;
     width: 950px;
     height: 70px;
-    background-color: #3d4142;
-    box-shadow: #222 0 8px 32px 0, #222 0 1.5px 4px 0;
+    background: var(--light-gray);
+    border: var(--border-thin) solid var(--border-gray);
 }
 
-.game-board-score, .game-board-timer{
-    border-radius: 12px;
-    width: 100px;
+.game-board-score, .game-board-timer {
+    border-radius: var(--border-radius-small);
+    width: 120px;
     height: 50px;
-    background-color: black;
-    color: red;
-    font-size: 2rem;
+    background-color: var(--white-bg);
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
-    border: red 2px solid;
-    font-family: 'Digital-7', sans-serif;
+    border: var(--border-width) solid var(--border-gray);
+    font-family: var(--font-family);
+    transition: all 0.3s ease;
 }
 
-.game-board-button{
-  font-size: 18px;
-  background-color: #008542;
-  color: #fff;
-  text-shadow: 0 2px 0 rgb(0 0 0 / 25%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  border: 0;
-  z-index: 1;
-  user-select: none;
-  cursor: pointer;
+.game-board-score.flags-empty {
+    background-color: var(--yellow-warning);
+    color: #000;
+    border-color: var(--yellow-dark);
+}
+
+.game-board-button {
+  padding: 12px 24px;
+  font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1px;
-  white-space: unset;
-  padding: 0.8rem 1.5rem;
-  text-decoration: none;
-  font-weight: 900;
-  transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
+  font-weight: 600;
+  color: #fff;
+  background-color: var(--blue-primary);
+  border: none;
+  border-radius: var(--border-radius-small);
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.3s ease;
 }
 
-.game-board-button:before{
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "";
-  transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-  z-index: -1;
-  background-color: #008542 !important;
-  box-shadow: 0 -4px rgb(21 108 0 / 50%) inset,
-    0 4px rgb(100 253 31 / 99%) inset, -4px 0 rgb(100 253 31 / 50%) inset,
-    4px 0 rgb(21 108 0 / 50%) inset;
+.game-board-button:hover {
+  background-color: var(--blue-hover);
 }
 
-.game-board-button:after{
-  position: absolute;
-  pointer-events: none;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  content: "";
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-  transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-}
-
-.game-board-button:hover:before{
-  box-shadow: 0 -4px rgb(0 0 0 / 50%) inset, 0 4px rgb(255 255 255 / 20%) inset,
-    -4px 0 rgb(255 255 255 / 20%) inset, 4px 0 rgb(0 0 0 / 50%) inset;
-}
-
-.game-board-button:hover:after{
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-}
-
-.game-board-button:active{
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-}
-
-.game-board-button:active:after{
-  box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
+.game-board-button:active {
+  background-color: var(--blue-active);
 }
 
 .game-board {
-    border-radius: 8px;
+    border-radius: var(--border-radius-small);
     height: 855px;
     width: 950px;
     margin-left: 25px;
     margin-top: 25px;
-    background-color: #7c7c7c;
+    background: #e9ecef;
     display: grid;
     grid-template-columns: repeat(16, 1fr); 
     grid-template-rows: repeat(16, 1fr);  
-    box-shadow: #222 0 8px 32px 0, #222 0 1.5px 4px 0;
+    border: var(--border-width) solid var(--border-gray);
 }
 
 .game-board-cell {
-    border: 1px solid #bdbdbd;
-    border-radius: 8px;
-    background: #3d4142;
+    border: var(--border-thin) solid var(--border-light);
+    border-radius: var(--border-radius-tiny);
+    background: var(--light-gray);
 }
 
 .game-board-cell.closed {
-    background: #3d4142;
-    border: 1px solid #bdbdbd;
+    background: var(--medium-gray);
+    border: var(--border-thin) solid var(--dark-gray);
     cursor: pointer;
 }
 
 .game-board-cell.open {
-    background: #e0eafc;
-    border: 1px solid #bdbdbd;
+    background: var(--white-bg);
+    border: var(--border-thin) solid var(--border-gray);
     cursor: default;
 }
 
-.game-board-cell.flag-mine {
+.game-board-cell.flag-mine,
+.game-board-cell.flag {
+    background: var(--medium-gray);
+    position: relative;
+}
+
+.game-board-cell.flag {
     background: #3d4142;
     position: relative;
 }
 
 .game-board-cell.flag-mine::after,
 .game-board-cell.flag::after,
-.game-board-cell.flag-mine::after,
+.game-board-cell.mine::after,
 .game-board-cell.mine-clicked::after {
     position: absolute;
-    left: 50%; top: 50%;
+    left: 50%; 
+    top: 50%;
     transform: translate(-50%, -50%);
-    font-size: 1.5rem;
-}
-
-.game-board-cell.flag-mine::after {
-    content: "🚩";
-}
-
-.game-board-cell.number-1,
-.game-board-cell.number-2,
-.game-board-cell.number-3{
-    font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 2.5rem;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.game-board-cell.number-1 {
-    color: #1976d2;
+.game-board-cell.flag-mine::after,
+.game-board-cell.flag::after {
+    content: "🚩";
 }
 
-.game-board-cell.number-2 {
-    color: #388e3c;
+.game-board-cell[class*="number-"] {
+    font-weight: bold;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
 }
 
-.game-board-cell.number-3 {
-    color: #d32f2f;
-}
+.game-board-cell.number-1 { color: var(--blue-primary); }
+.game-board-cell.number-2 { color: var(--green-success); }
+.game-board-cell.number-3 { color: var(--red-danger); }
 
 .game-board-cell.mine {
-    background: #e74c3c;
+    background: var(--red-danger);
     position: relative;
 }
 
@@ -200,14 +197,14 @@ body {
     content: "💣";
 }
 
-.game-board-cell.mine-clicked {
-    background: #ff0000;
-    position: relative;
-    animation: shake 0.2s 2;
-}
-
 .game-board-cell.mine-clicked::after {
     content: "💥";
+}
+
+.game-board-cell.mine-clicked {
+    background: var(--red-light);
+    position: relative;
+    animation: shake 0.2s 2;
 }
 
 @keyframes shake {
