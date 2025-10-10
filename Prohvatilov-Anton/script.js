@@ -81,10 +81,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return field;
   }
 
-  function isValidCoordinate(field, row, col) {
-    return row >= 0 && row < field.length && col >= 0 && col < field[0].length;
-  }
-
   function countNeighbourMines(field, row, col) {
     let count = 0;
     
@@ -132,6 +128,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
+  function getFlaggedCount(board) {
+    let flaggedCount = 0;
+    forEachCell(board, (cell) => {
+      if (cell.state === "flagged") {
+        flaggedCount++;
+      }
+    });
+    return flaggedCount;
+  }
+
   function toggleFlag(row, col) {
     if (!currentGame || currentGame.state !== "in_progress") {
       console.log("Game not active");
@@ -145,6 +151,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     
     if (cell.state === "closed") {
+      const flaggedCount = getFlaggedCount(currentGame.board);
+      
+      if (flaggedCount >= currentGame.minesCount) {
+        console.log("Maximum flags reached! Cannot place more flags.");
+        return;
+      }
+      
       cell.state = "flagged";
       console.log(`Flagged cell (${row}, ${col}). isFlagged: true`);
     } else if (cell.state === "flagged") {
@@ -180,20 +193,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateTimer() {
     const timerElement = document.querySelector('.game-board-timer');
-    timerElement.textContent = String(gameTime).padStart(3, '0');
+    const minutes = Math.floor(gameTime / 60);
+    const seconds = gameTime % 60;
+    timerElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   }
 
   function updateMineCounter(game) {
-    let flaggedCount = 0;
-    forEachCell(game.board, (cell) => {
-      if (cell.state === "flagged") {
-        flaggedCount++;
-      }
-    });
-    
+    const flaggedCount = getFlaggedCount(game.board);
     const remainingMines = game.minesCount - flaggedCount;
     const scoreElement = document.querySelector('.game-board-score');
     scoreElement.textContent = String(Math.max(0, remainingMines)).padStart(3, '0');
+    if (remainingMines === 0) {
+      scoreElement.classList.add('flags-empty');
+    } else {
+      scoreElement.classList.remove('flags-empty');
+    }
   }
 
   function floodOpen(game, row, col) {
@@ -263,13 +277,18 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function checkVictory(game) {
+  function getClosedNonMineCells(board) {
     let closedNonMineCells = 0;
-    forEachCell(game.board, (cell) => {
+    forEachCell(board, (cell) => {
       if (!cell.hasMine && cell.state === "closed") {
         closedNonMineCells++;
       }
     });
+    return closedNonMineCells;
+  }
+
+  function checkVictory(game) {
+    const closedNonMineCells = getClosedNonMineCells(game.board);
     
     if (closedNonMineCells === 0) {
       game.state = "victory";
@@ -278,19 +297,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  let gameInstance = createGame(16, 16, 40);
-  currentGame = gameInstance; 
-  renderBoard(gameInstance);
-  updateMineCounter(gameInstance);
-
-  document.querySelector(".game-board-button").addEventListener("click", () => {
+  function initializeGame() {
     stopTimer();
     gameStarted = false;
     gameTime = 0;
     updateTimer();
-    gameInstance = createGame(16, 16, 40);
-    currentGame = gameInstance; 
-    renderBoard(gameInstance);
-    updateMineCounter(gameInstance);
+    const game = createGame(16, 16, 40);
+    currentGame = game;
+    renderBoard(game);
+    updateMineCounter(game);
+    return game;
+  }
+
+  let gameInstance = initializeGame();
+
+  document.querySelector(".game-board-button").addEventListener("click", () => {
+    gameInstance = initializeGame();
   });
 });
