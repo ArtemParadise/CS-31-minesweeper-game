@@ -289,4 +289,4 @@ const CELL_STATE = {
   // ==== Генеруємо поле одразу при завантаженні ====
   gameState = generateField(10, 10, 10);
   renderGameBoard(gameState);
-  
+
