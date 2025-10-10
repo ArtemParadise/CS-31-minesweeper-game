@@ -149,6 +149,11 @@ body {
     position: relative;
 }
 
+.game-board-cell.flag {
+    background: #3d4142;
+    position: relative;
+}
+
 .game-board-cell.flag-mine::after,
 .game-board-cell.flag::after,
 .game-board-cell.mine::after,
@@ -192,14 +197,14 @@ body {
     content: "💣";
 }
 
+.game-board-cell.mine-clicked::after {
+    content: "💥";
+}
+
 .game-board-cell.mine-clicked {
     background: var(--red-light);
     position: relative;
     animation: shake 0.2s 2;
-}
-
-.game-board-cell.mine-clicked::after {
-    content: "💥";
 }
 
 @keyframes shake {
