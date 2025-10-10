@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  let gameTimer = null;
+  let gameTime = 0;
+  let gameStarted = false;
+
   function createCell(hasMine = false, adjacentMines = 0, state = "closed") {
     return { hasMine, adjacentMines, state };
   }
@@ -9,48 +13,187 @@ document.addEventListener("DOMContentLoaded", () => {
     [1, -1], [1, 0], [1, 1]
   ];
 
-  function createGame(rows = 16, cols = 16, minesCount = 40) {
-    const game = { rows, cols, minesCount, state: "in_progress", board: [] };
+  let currentGame = null;
 
+  function isValidCoordinate(field, row, col) {
+    return row >= 0 && row < field.length && col >= 0 && col < field[0].length;
+  }
+
+  function forEachCell(field, callback) {
+    for (let row = 0; row < field.length; row++) {
+      for (let col = 0; col < field[0].length; col++) {
+        callback(field[row][col], row, col);
+      }
+    }
+  }
+
+  function generateField(rows, cols, mines) {
+    const field = [];
+    
     for (let row = 0; row < rows; row++) {
       const boardRow = [];
-      for (let col = 0; col < cols; col++) boardRow.push(createCell());
-      game.board.push(boardRow);
+      for (let col = 0; col < cols; col++) {
+        boardRow.push(createCell());
+      }
+      field.push(boardRow);
     }
-
-    function countAdjacentMines(row, col) {
-      return directions.reduce((count, [deltaRow, deltaCol]) => {
-        const newRow = row + deltaRow, newCol = col + deltaCol;
-        return (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && game.board[newRow][newCol].hasMine) ? count + 1 : count;
-      }, 0);
-    }
-
-    let placedMines = 0, attempts = 0;
-    while (placedMines < minesCount && attempts < minesCount * 20) {
+    
+    let placedMines = 0;
+    let attempts = 0;
+    const maxAttempts = mines * 50; 
+    
+    while (placedMines < mines && attempts < maxAttempts) {
       const randomRow = Math.floor(Math.random() * rows);
       const randomCol = Math.floor(Math.random() * cols);
-      if (!game.board[randomRow][randomCol].hasMine) {
-        game.board[randomRow][randomCol].hasMine = true;
-        let isValidPlacement = true;
-        for (let checkRow = 0; checkRow < rows && isValidPlacement; checkRow++) {
-          for (let checkCol = 0; checkCol < cols; checkCol++) {
-            if (!game.board[checkRow][checkCol].hasMine && countAdjacentMines(checkRow, checkCol) > 3) {
-              isValidPlacement = false;
-              break;
+      
+      if (!field[randomRow][randomCol].hasMine) {
+        field[randomRow][randomCol].hasMine = true;
+
+        let validPlacement = true;
+        forEachCell(field, (cell, row, col) => {
+          if (validPlacement && !cell.hasMine) {
+            const adjacentCount = countNeighbourMines(field, row, col);
+            if (adjacentCount > 3) {
+              validPlacement = false;
             }
           }
+        });
+        
+        if (validPlacement) {
+          placedMines++;
+        } else {
+          field[randomRow][randomCol].hasMine = false;
         }
-        if (isValidPlacement) placedMines++; else game.board[randomRow][randomCol].hasMine = false;
       }
       attempts++;
     }
 
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        if (!game.board[row][col].hasMine) game.board[row][col].adjacentMines = countAdjacentMines(row, col);
+    forEachCell(field, (cell, row, col) => {
+      if (!cell.hasMine) {
+        cell.adjacentMines = countNeighbourMines(field, row, col);
+      }
+    });
+    
+    console.log(`Generated field with ${placedMines}/${mines} mines (max 3 adjacent per cell):`, field);
+    if (placedMines < mines) {
+      console.warn(`Warning: Only ${placedMines} out of ${mines} mines placed due to adjacency constraint`);
+    }
+    return field;
+  }
+
+  function isValidCoordinate(field, row, col) {
+    return row >= 0 && row < field.length && col >= 0 && col < field[0].length;
+  }
+
+  function countNeighbourMines(field, row, col) {
+    let count = 0;
+    
+    for (let [deltaRow, deltaCol] of directions) {
+      const neighborRow = row + deltaRow;
+      const neighborCol = col + deltaCol;
+      
+      if (isValidCoordinate(field, neighborRow, neighborCol) && field[neighborRow][neighborCol].hasMine) {
+        count++;
       }
     }
+    
+    console.log(`Mines around cell (${row}, ${col}):`, count);
+    return count;
+  }
+
+  function openCell(row, col) {
+    if (!currentGame || currentGame.state !== "in_progress") {
+      console.log("Game not active");
+      return;
+    }
+    
+    const cell = currentGame.board[row][col];
+    if (cell.state !== "closed") {
+      console.log("Cell already opened or flagged");
+      return;
+    }
+    
+    startTimer();
+    
+    if (cell.hasMine) {
+      cell.state = "open";
+      currentGame.state = "defeat";
+      stopTimer();
+      revealMines(currentGame);
+      alert("💥 Ти програв!");
+      console.log("Game Over! Hit a mine at", row, col);
+      console.log("Game state:", currentGame.state);
+    } else {
+      floodOpen(currentGame, row, col);
+      checkVictory(currentGame);
+      console.log(`Opened cell (${row}, ${col}), adjacent mines:`, cell.adjacentMines);
+      console.log("Current game state:", currentGame.state);
+    }
+  }
+
+
+  function toggleFlag(row, col) {
+    if (!currentGame || currentGame.state !== "in_progress") {
+      console.log("Game not active");
+      return;
+    }
+    
+    const cell = currentGame.board[row][col];
+    if (cell.state === "open") {
+      console.log("Cannot flag opened cell");
+      return;
+    }
+    
+    if (cell.state === "closed") {
+      cell.state = "flagged";
+      console.log(`Flagged cell (${row}, ${col}). isFlagged: true`);
+    } else if (cell.state === "flagged") {
+      cell.state = "closed";
+      console.log(`Unflagged cell (${row}, ${col}). isFlagged: false`);
+    }
+    
+    console.log("Current cell state:", cell.state);
+  }
+
+  function createGame(rows = 16, cols = 16, minesCount = 40) {
+    const game = { rows, cols, minesCount, state: "in_progress", board: generateField(rows, cols, minesCount) };
     return game;
+  }
+
+  function startTimer() {
+    if (!gameStarted) {
+      gameStarted = true;
+      gameTime = 0;
+      gameTimer = setInterval(() => {
+        gameTime++;
+        updateTimer();
+      }, 1000);
+    }
+  }
+
+  function stopTimer() {
+    if (gameTimer) {
+      clearInterval(gameTimer);
+      gameTimer = null;
+    }
+  }
+
+  function updateTimer() {
+    const timerElement = document.querySelector('.game-board-timer');
+    timerElement.textContent = String(gameTime).padStart(3, '0');
+  }
+
+  function updateMineCounter(game) {
+    let flaggedCount = 0;
+    forEachCell(game.board, (cell) => {
+      if (cell.state === "flagged") {
+        flaggedCount++;
+      }
+    });
+    
+    const remainingMines = game.minesCount - flaggedCount;
+    const scoreElement = document.querySelector('.game-board-score');
+    scoreElement.textContent = String(Math.max(0, remainingMines)).padStart(3, '0');
   }
 
   function floodOpen(game, row, col) {
@@ -59,91 +202,95 @@ document.addEventListener("DOMContentLoaded", () => {
     cell.state = "open";
     if (cell.adjacentMines === 0) {
       for (let [deltaRow, deltaCol] of directions) {
-        const newRow = row + deltaRow, newCol = col + deltaCol;
-        if (newRow >= 0 && newRow < game.rows && newCol >= 0 && newCol < game.cols) floodOpen(game, newRow, newCol);
+        const neighborRow = row + deltaRow, neighborCol = col + deltaCol;
+        if (isValidCoordinate(game.board, neighborRow, neighborCol)) {
+          floodOpen(game, neighborRow, neighborCol);
+        }
       }
     }
+  }
+
+  function createCellElement(cellData, row, col, game) {
+    const cellElement = document.createElement("div");
+    cellElement.classList.add("game-board-cell");
+    cellElement.textContent = "";
+
+    if (cellData.state === "closed") {
+      cellElement.classList.add("closed");
+    } else if (cellData.state === "flagged") {
+      cellElement.classList.add("flag");
+    } else if (cellData.state === "open") {
+      if (cellData.hasMine) {
+        cellElement.classList.add("mine");
+      } else if (cellData.adjacentMines > 0) {
+        cellElement.classList.add(`number-${cellData.adjacentMines}`);
+        cellElement.textContent = cellData.adjacentMines;
+      } else {
+        cellElement.classList.add("open");
+      }
+    }
+
+    cellElement.addEventListener("click", () => {
+      openCell(row, col);
+      renderBoard(game);
+    });
+
+    cellElement.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+      toggleFlag(row, col);
+      updateMineCounter(game);
+      renderBoard(game);
+    });
+
+    return cellElement;
   }
 
   function renderBoard(game) {
     const boardElement = document.querySelector('.game-board');
     boardElement.innerHTML = "";
-    for (let row = 0; row < game.rows; row++) {
-      for (let col = 0; col < game.cols; col++) {
-        const cellData = game.board[row][col];
-        const cellElement = document.createElement("div");
-        cellElement.classList.add("game-board-cell");
-        cellElement.textContent = "";
-
-        if (cellData.state === "closed") {
-          cellElement.classList.add("closed");
-        } else if (cellData.state === "flagged") {
-          cellElement.classList.add("flagged");
-          cellElement.textContent = "🚩";
-        } else if (cellData.state === "open") {
-          if (cellData.hasMine) {
-            cellElement.classList.add("mine");
-            cellElement.textContent = "💣";
-          } else if (cellData.adjacentMines > 0) {
-            cellElement.classList.add(`number-${cellData.adjacentMines}`);
-            cellElement.textContent = cellData.adjacentMines;
-          } else {
-            cellElement.classList.add("open");
-          }
-        }
-
-        cellElement.addEventListener("click", () => {
-          if (game.state !== "in_progress") return;
-          if (cellData.hasMine) {
-            cellData.state = "open";
-            game.state = "defeat";
-            revealMines(game);
-            alert("💥 Ти програв!");
-          } else {
-            floodOpen(game, row, col);
-            checkVictory(game);
-          }
-          renderBoard(game);
-        });
-
-        cellElement.addEventListener("contextmenu", (event) => {
-          event.preventDefault();
-          if (game.state !== "in_progress") return;
-          cellData.state = cellData.state === "closed" ? "flagged" : cellData.state === "flagged" ? "closed" : cellData.state;
-          renderBoard(game);
-        });
-
-        boardElement.appendChild(cellElement);
-      }
-    }
+    
+    forEachCell(game.board, (cellData, row, col) => {
+      const cellElement = createCellElement(cellData, row, col, game);
+      boardElement.appendChild(cellElement);
+    });
   }
 
   function revealMines(game) {
-    for (let row = 0; row < game.rows; row++) {
-      for (let col = 0; col < game.cols; col++) {
-        if (game.board[row][col].hasMine) game.board[row][col].state = "open";
+    forEachCell(game.board, (cell) => {
+      if (cell.hasMine) {
+        cell.state = "open";
       }
-    }
+    });
   }
 
   function checkVictory(game) {
     let closedNonMineCells = 0;
-    for (let row = 0; row < game.rows; row++) {
-      for (let col = 0; col < game.cols; col++) {
-        if (!game.board[row][col].hasMine && game.board[row][col].state === "closed") closedNonMineCells++;
+    forEachCell(game.board, (cell) => {
+      if (!cell.hasMine && cell.state === "closed") {
+        closedNonMineCells++;
       }
-    }
+    });
+    
     if (closedNonMineCells === 0) {
       game.state = "victory";
+      stopTimer();
       alert("🎉 Перемога!");
     }
   }
 
-  let currentGame = createGame(16, 16, 40);
-  renderBoard(currentGame);
+  let gameInstance = createGame(16, 16, 40);
+  currentGame = gameInstance; 
+  renderBoard(gameInstance);
+  updateMineCounter(gameInstance);
 
   document.querySelector(".game-board-button").addEventListener("click", () => {
-    currentGame = createGame(16, 16, 40);
-    renderBoard(currentGame);
+    stopTimer();
+    gameStarted = false;
+    gameTime = 0;
+    updateTimer();
+    gameInstance = createGame(16, 16, 40);
+    currentGame = gameInstance; 
+    renderBoard(gameInstance);
+    updateMineCounter(gameInstance);
   });
 });

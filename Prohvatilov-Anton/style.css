@@ -154,47 +154,45 @@ body {
     background: #3d4142;
     position: relative;
 }
-.game-board-cell.mine::after,
-.game-board-cell.flag-mine::after,
-.game-board-cell.flag::after,
-.game-board-cell.flag-mine::after,
-.game-board-cell.mine-clicked::after {
-    position: absolute;
-    left: 50%; top: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.5rem;
+
+.game-board-cell.flag {
+    background: #3d4142;
+    position: relative;
 }
 
-.game-board-cell.flag-mine::after {
+.game-board-cell.flag-mine::after,
+.game-board-cell.flag::after,
+.game-board-cell.mine::after,
+.game-board-cell.mine-clicked::after {
+    position: absolute;
+    left: 50%; 
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-board-cell.flag-mine::after,
+.game-board-cell.flag::after {
     content: "🚩";
 }
 
-.game-board-cell.number-1 {
-    color: #1976d2;
+.game-board-cell[class*="number-"] {
     font-weight: bold;
-    font-size: 1.3rem;
+    font-size: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
+    line-height: 1;
 }
 
-.game-board-cell.number-2 {
-    color: #388e3c;
-    font-weight: bold;
-    font-size: 1.3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.game-board-cell.number-3 {
-    color: #d32f2f;
-    font-weight: bold;
-    font-size: 1.3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+.game-board-cell.number-1 { color: #1976d2; }
+.game-board-cell.number-2 { color: #388e3c; }
+.game-board-cell.number-3 { color: #d32f2f; }
 
 .game-board-cell.mine {
     background: #e74c3c;
@@ -205,14 +203,14 @@ body {
     content: "💣";
 }
 
+.game-board-cell.mine-clicked::after {
+    content: "💥";
+}
+
 .game-board-cell.mine-clicked {
     background: #ff0000;
     position: relative;
     animation: shake 0.2s 2;
-}
-
-.game-board-cell.mine-clicked::after {
-    content: "💥";
 }
 
 @keyframes shake {
