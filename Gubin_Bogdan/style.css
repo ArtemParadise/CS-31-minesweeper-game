@@ -1,0 +1,89 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; 
+    margin: 0; 
+  
+  }
+  
+  #main {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(66, 60, 71);
+    height: 500px;
+    width: 500px;
+  }
+  
+  
+  #head{
+   display: flex;
+   justify-content: space-between;
+   background-color: rgb(104, 103, 100);
+   border-radius: 10px;
+   border: 5px ridge rgb(211, 177, 147);
+   margin: 20px;
+   padding: 20px;
+  }
+  
+  
+  
+  
+  
+  .timer-start-indicator{
+      display: inline-block;
+      background-color: rgb(67, 49, 49);
+      color: rgb(255, 11, 11);
+      border-radius: 10px;
+      border: 2px ridge rgb(211, 177, 147);
+      padding: 5px;
+  }
+  
+  
+  
+  #gameboard {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); 
+    grid-template-rows: repeat(6, 1fr);    
+    gap: 3px;
+  
+    width: 450px;
+    height: 370px;
+    margin: auto;
+    background-color: rgb(104, 103, 100);
+    border: 5px ridge rgb(211, 177, 147);
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    padding: 5px;
+    box-sizing: border-box;
+  }
+  
+  
+  .cell {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-family: monospace;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  
+  
+  .closed { background: #94a3b8; }
+  .opened { background: #e2e8f0; color: #1e293b; border: 1px solid #cbd5e1; }
+  .flag-on-mine { background: #f59e0b; }
+  .flag-wrong { background: #b91c1c; }
+  .mine { background: #ef4444; }
+  .mine-clicked { background: #7f1d1d; }
+  .empty {
+    background: #030404;  
+    color: transparent;   
+  }
+  
+  
+  
+  
