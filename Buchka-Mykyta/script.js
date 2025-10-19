@@ -47,52 +47,52 @@ function newGame(){
 
 	boardEl.innerHTML='';
 	boardEl.style.gridTemplateColumns = `repeat(${cols}, 24px)`;
-	for(let r=0;r<rows;r++){
-		const row=[];
-		for(let c=0;c<cols;c++){
-			const cell = { r, c, mine:false, adj:0, uncovered:false, flagged:false, el:null };
-			row.push(cell);
+	for(let row=0; row<rows; row++){
+		const rowArr=[];
+		for(let col=0; col<cols; col++){
+			const cell = { row, col, mine:false, adj:0, uncovered:false, flagged:false, el:null };
+			rowArr.push(cell);
 			const div = document.createElement('div');
 			div.className='cell';
-			div.dataset.r=r; div.dataset.c=c;
+			div.dataset.row = row; div.dataset.col = col;
 			div.oncontextmenu = (e)=>{ e.preventDefault(); toggleFlag(cell); };
 			div.onclick = (e)=>{ clickCell(cell); };
 			div.ondblclick = (e)=>{ chord(cell); };
 			cell.el = div;
 			boardEl.appendChild(div);
 		}
-		grid.push(row);
+		grid.push(rowArr);
 	}
 }
 
 // Places mines randomly after first click
-function placeMines(safeR,safeC){
+function placeMines(safeRow,safeCol){
 	let placed=0;
 	while(placed<mines){
-		const r = Math.floor(Math.random()*rows);
-		const c = Math.floor(Math.random()*cols);
-		const cell = grid[r][c];
+		const row = Math.floor(Math.random()*rows);
+		const col = Math.floor(Math.random()*cols);
+		const cell = grid[row][col];
 		// avoid placing on safe cell or neighbors
 		if(cell.mine) continue;
-		if(Math.abs(r-safeR)<=1 && Math.abs(c-safeC)<=1) continue;
+		if(Math.abs(row-safeRow)<=1 && Math.abs(col-safeCol)<=1) continue;
 		cell.mine=true; placed++;
 	}
 	// compute adj
-	for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
+	for(let row=0; row<rows; row++) for(let col=0; col<cols; col++){
 		let count=0;
-		for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
-			if(dr===0 && dc===0) continue;
-			const rr=r+dr, cc=c+dc;
-			if(rr>=0 && rr<rows && cc>=0 && cc<cols && grid[rr][cc].mine) count++;
+		for(let dRow=-1; dRow<=1; dRow++) for(let dCol=-1; dCol<=1; dCol++){
+			if(dRow===0 && dCol===0) continue;
+			const adjRow = row + dRow, adjCol = col + dCol;
+			if(adjRow>=0 && adjRow<rows && adjCol>=0 && adjCol<cols && grid[adjRow][adjCol].mine) count++;
 		}
-		grid[r][c].adj = count;
+		grid[row][col].adj = count;
 	}
 }
 
 // Handles cell click events
 function clickCell(cell){
 	if(cell.flagged || cell.uncovered) return;
-	if(firstClick){ placeMines(cell.r,cell.c); startTimer(); firstClick=false; }
+	if(firstClick){ placeMines(cell.row,cell.col); startTimer(); firstClick=false; }
 	reveal(cell);
 	checkWin();
 }
@@ -114,9 +114,9 @@ function reveal(cell){
 		cell.el.classList.add('number-'+cell.adj);
 	}else{
 		// flood fill neighbors
-		for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
-			const rr=cell.r+dr, cc=cell.c+dc;
-			if(rr>=0 && rr<rows && cc>=0 && cc<cols) reveal(grid[rr][cc]);
+		for(let dRow=-1; dRow<=1; dRow++) for(let dCol=-1; dCol<=1; dCol++){
+			const adjRow = cell.row + dRow, adjCol = cell.col + dCol;
+			if(adjRow>=0 && adjRow<rows && adjCol>=0 && adjCol<cols) reveal(grid[adjRow][adjCol]);
 		}
 	}
 	cell.el.classList.add('disabled');
@@ -137,10 +137,10 @@ function chord(cell){
 	if(!cell.uncovered || cell.adj===0) return;
 	// count flags around
 	let f=0; let covered=[];
-	for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
-		const rr=cell.r+dr, cc=cell.c+dc;
-		if(rr>=0 && rr<rows && cc>=0 && cc<cols){
-			const n=grid[rr][cc]; if(n.flagged) f++; else if(!n.uncovered) covered.push(n);
+	for(let dRow=-1; dRow<=1; dRow++) for(let dCol=-1; dCol<=1; dCol++){
+		const adjRow = cell.row + dRow, adjCol = cell.col + dCol;
+		if(adjRow>=0 && adjRow<rows && adjCol>=0 && adjCol<cols){
+			const n=grid[adjRow][adjCol]; if(n.flagged) f++; else if(!n.uncovered) covered.push(n);
 		}
 	}
 	if(f===cell.adj){
@@ -155,8 +155,8 @@ function gameOver(won, explodedCell = null){
     boardEl.querySelectorAll('.cell').forEach(div=>div.classList.add('disabled'));
     if(!won){
         resetBtn.textContent='😵';
-        for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
-            const cell = grid[r][c];
+        for(let row=0; row<rows; row++) for(let col=0; col<cols; col++){
+            const cell = grid[row][col];
             if(cell === explodedCell) continue;
             if(cell.mine && !cell.flagged){
                 cell.el.textContent='💣';
@@ -174,8 +174,8 @@ function gameOver(won, explodedCell = null){
 // Checks if player has won
 function checkWin(){
 	let uncovered=0;
-	for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
-		if(grid[r][c].uncovered) uncovered++;
+	for(let row=0; row<rows; row++) for(let col=0; col<cols; col++){
+		if(grid[row][col].uncovered) uncovered++;
 	}
 	if(uncovered === rows*cols - mines){
 		gameOver(true);
