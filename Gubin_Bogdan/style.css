@@ -15,7 +15,6 @@ body {
     width: 500px;
   }
   
-  
   #head{
    display: flex;
    justify-content: space-between;
@@ -26,10 +25,6 @@ body {
    padding: 20px;
   }
   
-  
-  
-  
-  
   .timer-start-indicator{
       display: inline-block;
       background-color: rgb(67, 49, 49);
@@ -38,8 +33,6 @@ body {
       border: 2px ridge rgb(211, 177, 147);
       padding: 5px;
   }
-  
-  
   
   #gameboard {
     display: grid;
@@ -59,7 +52,6 @@ body {
     box-sizing: border-box;
   }
   
-  
   .cell {
     width: 100%;
     height: 100%;
@@ -71,7 +63,6 @@ body {
     border-radius: 4px;
     box-sizing: border-box;
   }
-  
   
   .closed { background: #94a3b8; }
   .opened { background: #e2e8f0; color: #1e293b; border: 1px solid #cbd5e1; }
