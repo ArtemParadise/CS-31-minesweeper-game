@@ -1,0 +1,199 @@
+:root {
+    --bg: #1a0000;
+    --panel: #2d0000;
+    --tile: #4d0a0a;
+    --tile-dark: #330000;
+    --tile-light: #7a1a1a;
+    --flag: #ff2d2d;
+    --mine: #000;
+    --accent: #ff2d2d;
+    --text: #fff;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    position: relative;
+    background: none; 
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: url('bomb_background.png') center/cover no-repeat;
+    opacity: 1.0;           /* Прозорість */
+    filter: blur(6px);       /* Розмиття */
+}
+
+.game {
+    width: 835px;
+    background: linear-gradient(135deg, #2d0000 0%, #1a0000 100%);
+    padding: 16px;
+    border-radius: 12px;
+    border: 8px solid #7a1a1a;
+    box-shadow: 0 0 32px 0 #330000cc;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.counter {
+    background: #330000;
+    color: #ff2d2d;
+    padding: 8px 14px;
+    font-weight: 700;
+    border-radius: 6px;
+    min-width: 56px;
+    text-align: center;
+    font-size: 1.3em;
+    letter-spacing: 2px;
+    box-shadow: 0 2px 8px #1a0000aa inset;
+    border: 2px solid #7a1a1a;
+}
+
+.smiley {
+    width: 56px;
+    height: 40px;
+    border-radius: 8px;
+    background: #ff2d2d;
+    border: 2px solid #7a1a1a;
+    font-size: 22px;
+    color: #fff;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px #1a0000aa inset;
+    cursor: pointer;
+}
+.smiley:hover {
+    background: #fff;
+    color: #ff2d2d;
+}
+
+.board {
+    background: #2d0000;
+    padding: 10px;
+    border-radius: 8px;
+    display: grid;
+    grid-gap: 2px;
+    justify-content: start;
+    box-shadow: 0 0 16px #1a0000cc inset;
+}
+
+.cell {
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #4d0a0a 60%, #7a1a1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #330000;
+    color: #fff;
+    font-weight: 700;
+    user-select: none;
+    font-size: 1.1em;
+    transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    cursor: pointer;
+}
+
+.cell.uncovered {
+    background: linear-gradient(135deg, #7a1a1a 60%, #330000 100%);
+    box-shadow: 0 0 6px #ff2d2d55 inset;
+    color: #fff;
+}
+
+.cell.mine {
+    background: linear-gradient(135deg, #000 60%, #7a1a1a 100%);
+    color: #ff2d2d;
+}
+
+.cell.flag {
+    color: var(--flag);
+    text-shadow: 0 0 4px #ff2d2d88;
+}
+
+.cell.disabled {
+    pointer-events: none;
+    opacity: 0.8;
+}
+
+.footer {
+    margin-top: 12px;
+}
+
+.controls {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    justify-content: center;
+}
+
+.hint {
+    color: #ff2d2d;
+    margin-top: 10px;
+    text-align: center;
+    font-size: 1.05em;
+    letter-spacing: 1px;
+}
+
+label {
+    color: #fff;
+    font-weight: 500;
+    letter-spacing: 1px;
+}
+
+input[type="number"] {
+    background: #1a0000;
+    color: #ff2d2d;
+    border: 1.5px solid #7a1a1a;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 1em;
+    width: 56px;
+    transition: border 0.2s, background 0.2s;
+}
+input[type="number"]:focus {
+    border: 1.5px solid #ff2d2d;
+    background: #330000;
+    outline: none;
+}
+
+button#new {
+    background: #ff2d2d;
+    color: #fff;
+    border: 2px solid #7a1a1a;
+    border-radius: 6px;
+    padding: 6px 18px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px #1a0000aa inset;
+}
+button#new:hover {
+    background: #fff;
+    color: #ff2d2d;
+}
+
+/* number colors */
+.cell.number-1 { color: #ff6f6f; text-shadow: 0 0 4px #ff2d2d88; }
+.cell.number-2 { color: #ffbaba; }
+.cell.number-3 { color: #ff2d2d; }
+.cell.number-4 { color: #ff8c8c; }
+.cell.number-5 { color: #fff; }
+.cell.number-6 { color: #ff2d2d; font-weight: 900; }
+.cell.number-7 { color: #fff; }
+.cell.number-8 { color: #7a1a1a; }
