@@ -235,9 +235,6 @@ function toggleFlag(row, col) {
   draw();
 //test-test-test--------------------------------
 
-// --- TIMER ---
-
-
 function startTimer() {
   if (timerId !== null) return;                // вже тікає — не запускаємо вдруге
   seconds = 0;
@@ -256,7 +253,6 @@ function stopTimer() {
   }
 }
 
-// опційно: для "нової гри"
 function resetTimer() {
   stopTimer();
   seconds = 0;
@@ -275,8 +271,9 @@ function newGame(rows = ROWS, cols = COLS, mines = MINES) {
     console.log('New game. Timer reset to 0s');
   }
   
-
+//test-test-test--------------------------------
   draw();
   openCell(4,3)
   openCell(3,2)
   draw();
+  //test-test-test--------------------------------
