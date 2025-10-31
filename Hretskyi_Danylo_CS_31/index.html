@@ -11,10 +11,36 @@
     <div id="game-board">
     <div class="game-board-wrapper">
         <header class="game-board-header">
-            <div class="game-board-header__flags_left">🌴 010</div>
-            <button class="start-button">Start</button>
-            <div class="game-board-header__timer">00:00</div>
+
+            <div class="game-board-header__left" role="group" aria-label="Counters">
+              <div id="flagsLeft" class="counter game-board-header__flags_left" title="Flags left">🚩 010</div>
+              <div id="timer" class="counter game-board-header__timer" title="Elapsed time">000</div>
+              <button id="resetBtn" class="reset" title="New game / Reset" aria-live="polite">NEW GAME</button>
+            </div>
+          
+            <div class="game-board-header__center" role="group" aria-label="Primary controls">
+              
+
+            </div>
+          
+            <div class="game-board-header__right" role="group" aria-label="Settings and timer">
+
+          
+              <label class="sr-only" for="difficulty">Difficulty</label>
+              <select id="difficulty" class="select difficulty" title="Difficulty">
+                <option value="beginner">Beginner (9×9, 10)</option>
+                <option value="intermediate">Intermediate (16×16, 40)</option>
+                <option value="expert">Expert (30×16, 99)</option>
+                <option value="custom">Custom…</option>
+              </select>
+          
+              <button id="pauseBtn" class="icon-btn" aria-pressed="false" title="Pause / Resume">⏸</button>
+              <button id="hintBtn" class="icon-btn" title="Hint (auto-reveal a safe cell)">💡</button>
+              <button id="helpBtn" class="icon-btn" title="How to play">❓</button>
+
+            </div>
         </header>
+          
         <div class="game-board-wrapper__content">
             <!-- 1 row -->
             <div class="game-board-wrapper__row">
