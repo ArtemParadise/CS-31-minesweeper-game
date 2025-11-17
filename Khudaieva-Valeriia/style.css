@@ -1,0 +1,122 @@
+body {
+    background: linear-gradient(135deg, #a0ffa0, #cfa9ff);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    font-family: 'Segoe UI', sans-serif;
+    margin: 0;
+  }
+  
+  .panel {
+    background: #b36bff;
+    border: 4px solid #7a33ff;
+    box-shadow: inset 2px 2px #c8a8ff, inset -2px -2px #5a0099, 0 0 15px #ad6bff;
+    padding: 15px;
+    border-radius: 20px;
+  }
+  
+  .topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(90deg, #9e4aff, #6a00ff);
+    border: 3px solid #6a00ff;
+    border-radius: 15px;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    color: #e0ffe0;
+    font-size: 20px;
+    font-weight: bold;
+    box-shadow: inset 0 0 10px #3b0077;
+  }
+  
+  .start-btn {
+    font-size: 22px;
+    background: #c0ffb3;
+    color: #4a0066;
+    border: 2px solid #4a0066;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .start-btn:hover {
+    background: #9affb0;
+    transform: scale(1.05);
+  }
+  
+  /* Ігрове поле */
+  .board {
+    display: grid;
+    grid-template-columns: repeat(11, 35px);
+    grid-auto-rows: 35px;
+    gap: 3px;
+    background: #4a0066;
+    padding: 6px;
+    border: 3px solid #4a0066;
+    border-radius: 15px;
+  }
+  
+  /* Клітинки */
+  .cell {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  
+  /* Початковий стан — зелений */
+  .cell.closed {
+    background: #66ff99;
+    box-shadow: inset -2px -2px #3bb56f, inset 2px 2px #9affc1;
+  }
+  
+  /* Відкрита — фіолетовий відтінок */
+  .cell.open {
+    background: linear-gradient(135deg, #a866ff, #7a33ff);
+    color: #fff;
+    box-shadow: inset -2px -2px #5a0099, inset 2px 2px #c8a8ff;
+  }
+  
+  /* Міна — рожевий */
+  .cell.mine {
+    background: #ff8ad6;
+    color: #660033;
+    box-shadow: inset 0 0 10px #ff3ba2;
+  }
+  
+  /* Вибух — яскраво-рожевий + пульсація */
+  .cell.exploded {
+    background: #ff4bbd;
+    color: #fff;
+    box-shadow: 0 0 15px #ff1e8a, inset 0 0 10px #ff0080;
+    animation: pulse 0.8s infinite alternate;
+  }
+  
+  /* Прапорець — зелено-фіолетовий */
+  .cell.flag {
+    background: linear-gradient(135deg, #8fffde, #66ff99);
+    box-shadow: inset -2px -2px #3b9070, inset 2px 2px #b2ffe0;
+  }
+  
+  /* Анімація вибуху */
+  @keyframes pulse {
+    from { box-shadow: 0 0 8px #ff5fc9; }
+    to   { box-shadow: 0 0 20px #ff1e8a; }
+  }
+  
+ 
+  .n1 { color: #bafff1; }
+  .n2 { color: #a4ffb3; }
+  .n3 { color: #e8ffb3; }
+  .n4 { color: #ffe3b3; }
+  .n5 { color: #ffc6e6; }
+  .n6 { color: #ffb3de; }
+  .n7 { color: #ff99cc; }
+  .n8 { color: #ff80bf; }  
