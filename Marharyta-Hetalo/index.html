@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minesweeper</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Minesweeper</h1>
+
+        <div class="controls">
+            
+                <div class="info-item">
+                    <span>Mines</span>
+                    <div class="value">10</div>
+                </div>
+                <button class="reset-btn">Start</button>
+                <div class="info-item">
+                    <span>Timer</span>
+                    <div class="value">00:00</div>
+                </div>
+            
+        </div>
+
+        <div style="text-align: center;">
+            <div class="board" id="board" style="grid-template-columns: repeat(10, 1fr);">
+                <div class="cell" data-row="0" data-col="0"></div>
+                <div class="cell" data-row="0" data-col="1"></div>
+                <div class="cell" data-row="0" data-col="2"></div>
+                <!-- <div class="cell revealed" data-row="0" data-col="1"></div>
+                <div class="cell revealed" data-row="0" data-col="2"></div> -->
+                <div class="cell" data-row="0" data-col="3"></div>
+                <div class="cell" data-row="0" data-col="4"></div>
+                <!-- <div class="cell flagged" data-row="0" data-col="4">🚩</div> -->
+                <div class="cell" data-row="0" data-col="5"></div>
+                <div class="cell" data-row="0" data-col="6"></div>
+                <!-- <div class="cell mine clicked" data-row="0" data-col="6">💥</div> -->
+                <div class="cell" data-row="0" data-col="7"></div>
+                <div class="cell" data-row="0" data-col="8"></div>
+                <div class="cell" data-row="0" data-col="9"></div>
+                
+                <div class="cell" data-row="1" data-col="0"></div>
+                <div class="cell" data-row="1" data-col="1"></div>
+                <!-- <div class="cell revealed num2" data-row="1" data-col="1">2</div> -->
+                <div class="cell" data-row="1" data-col="2"></div>
+                <div class="cell" data-row="1" data-col="3"></div>
+                <div class="cell" data-row="1" data-col="4"></div>
+                <div class="cell" data-row="1" data-col="5"></div>
+                <div class="cell" data-row="1" data-col="6"></div>
+                <div class="cell" data-row="1" data-col="7"></div>
+                <div class="cell" data-row="1" data-col="8"></div>
+                <div class="cell" data-row="1" data-col="9"></div>
+                
+                <div class="cell" data-row="2" data-col="0"></div>
+                <div class="cell" data-row="2" data-col="1"></div>
+                <div class="cell" data-row="2" data-col="2"></div>
+                <div class="cell" data-row="2" data-col="3"></div>
+                <div class="cell" data-row="2" data-col="4"></div>
+                <div class="cell" data-row="2" data-col="5"></div>
+                <div class="cell" data-row="2" data-col="6"></div>
+                <div class="cell" data-row="2" data-col="7"></div>
+                <div class="cell" data-row="2" data-col="8"></div>
+                <div class="cell" data-row="2" data-col="9"></div>
+                
+                <div class="cell" data-row="3" data-col="0"></div>
+                <div class="cell" data-row="3" data-col="1"></div>
+                <div class="cell" data-row="3" data-col="2"></div>
+                <div class="cell" data-row="3" data-col="3"></div>
+                <div class="cell" data-row="3" data-col="4"></div>
+                <div class="cell" data-row="3" data-col="5"></div>
+                <div class="cell" data-row="3" data-col="6"></div>
+                <div class="cell" data-row="3" data-col="7"></div>
+                <div class="cell" data-row="3" data-col="8"></div>
+                <div class="cell" data-row="3" data-col="9"></div>
+                
+                <div class="cell" data-row="4" data-col="0"></div>
+                <div class="cell" data-row="4" data-col="1"></div>
+                <div class="cell" data-row="4" data-col="2"></div>
+                <div class="cell" data-row="4" data-col="3"></div>
+                <div class="cell" data-row="4" data-col="4"></div>
+                <div class="cell" data-row="4" data-col="5"></div>
+                <div class="cell" data-row="4" data-col="6"></div>
+                <div class="cell" data-row="4" data-col="7"></div>
+                <!-- <div class="cell revealed" data-row="4" data-col="5"></div>
+                <div class="cell revealed num1" data-row="4" data-col="6">1</div>
+                <div class="cell mine revealed" data-row="4" data-col="7">💣</div> -->
+                <div class="cell" data-row="4" data-col="8"></div>
+                <div class="cell" data-row="4" data-col="9"></div>
+                
+                <div class="cell" data-row="5" data-col="0"></div>
+                <div class="cell" data-row="5" data-col="1"></div>
+                <div class="cell" data-row="5" data-col="2"></div>
+                <!-- <div class="cell mine revealed" data-row="5" data-col="2">💣</div> -->
+                <div class="cell" data-row="5" data-col="3"></div>
+                <div class="cell" data-row="5" data-col="4"></div>
+                <div class="cell" data-row="5" data-col="5"></div>
+                <div class="cell" data-row="5" data-col="6"></div>
+                <div class="cell" data-row="5" data-col="7"></div>
+                <div class="cell" data-row="5" data-col="8"></div>
+                <div class="cell" data-row="5" data-col="9"></div>
+
+                
+                <div class="cell" data-row="6" data-col="0"></div>
+                <div class="cell" data-row="6" data-col="1"></div>
+                <div class="cell" data-row="6" data-col="2"></div>
+                <div class="cell" data-row="6" data-col="3"></div>
+                <div class="cell" data-row="6" data-col="4"></div>
+                <div class="cell" data-row="6" data-col="5"></div>
+                <div class="cell" data-row="6" data-col="6"></div>
+                <div class="cell" data-row="6" data-col="7"></div>
+                <div class="cell" data-row="6" data-col="8"></div>
+                <div class="cell" data-row="6" data-col="9"></div>
+                
+                <div class="cell" data-row="7" data-col="0"></div>
+                <div class="cell" data-row="7" data-col="1"></div>
+                <div class="cell" data-row="7" data-col="2"></div>
+                <div class="cell" data-row="7" data-col="3"></div>
+                <div class="cell" data-row="7" data-col="4"></div>
+                <div class="cell" data-row="7" data-col="5"></div>
+                <div class="cell" data-row="7" data-col="6"></div>
+                <div class="cell" data-row="7" data-col="7"></div>
+                <div class="cell" data-row="7" data-col="8"></div>
+                <div class="cell" data-row="7" data-col="9"></div>
+                
+                <div class="cell" data-row="8" data-col="0"></div>
+                <div class="cell" data-row="8" data-col="1"></div>
+                <div class="cell" data-row="8" data-col="2"></div>
+                <div class="cell" data-row="8" data-col="3"></div>
+                <div class="cell" data-row="8" data-col="4"></div>
+                <div class="cell" data-row="8" data-col="5"></div>
+                <div class="cell" data-row="8" data-col="6"></div>
+                <div class="cell" data-row="8" data-col="7"></div>
+                <div class="cell" data-row="8" data-col="8"></div>
+                <div class="cell" data-row="8" data-col="9"></div>
+                
+                <div class="cell" data-row="9" data-col="0"></div>
+                <div class="cell" data-row="9" data-col="1"></div>
+                <div class="cell" data-row="9" data-col="2"></div>
+                <div class="cell" data-row="9" data-col="3"></div>
+                <div class="cell" data-row="9" data-col="4"></div>
+                <div class="cell" data-row="9" data-col="5"></div>
+                <div class="cell" data-row="9" data-col="6"></div>
+                <div class="cell" data-row="9" data-col="7"></div>
+                <div class="cell" data-row="9" data-col="8"></div>
+                <div class="cell" data-row="9" data-col="9"></div>
+            </div>
+        </div>
+
+        <div class="message"></div>
+    </div>
+    <script src="minesweeper.js"></script>
+</body>
+</html>
