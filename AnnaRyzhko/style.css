@@ -15,7 +15,6 @@
     --chip-bg: rgba(102, 155, 188, 0.12);
 
     /* Розміри дошки */
-    --cols: 11;
     --cell: 56px;
     /* розмір клітинки */
     --gap: 6px;
@@ -24,8 +23,15 @@
     /* скруглення кнопок */
 }
 
+/* Запобігає виділенню тексту, що важливо для Right-click */
 * {
     box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 html,
@@ -90,6 +96,9 @@ body {
     padding: 8px 12px;
     border-radius: 12px;
     text-shadow: 0 1px 0 rgba(0, 0, 0, .25);
+    /* Для уникнення розширення контейнера при 3-х символах */
+    min-width: 65px;
+    text-align: center;
 }
 
 .counter {
@@ -101,17 +110,20 @@ body {
 }
 
 .start-btn {
-    background: linear-gradient(180deg, rgba(102, 155, 188, 0.35), rgba(102, 155, 188, 0.25));
+    background: linear-gradient(180deg, rgba(102, 155, 188, 0.6), rgba(2, 52, 78, 0.773));
     color: var(--beige);
     border: 1px solid var(--chip-br);
+    border-color: rgba(102, 155, 188, 0.75);
     font-weight: 800;
     font-size: 1.4rem;
     padding: 10px 36px;
+    width: 160px;
     border-radius: 12px;
     letter-spacing: .5px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, .25), inset 0 1px 0 rgba(255, 255, 255, .06);
     cursor: pointer;
     transition: transform .06s ease, box-shadow .15s ease, background .15s ease;
+    text-shadow: 0 1px 0 rgba(70, 69, 69, 0.45);
 }
 
 .start-btn:hover {
@@ -128,10 +140,16 @@ body {
     outline-offset: 2px;
 }
 
+/* Стиль для кнопки "Рестарт" */
+.start-btn.restart {
+    background: linear-gradient(180deg, rgba(193, 18, 31, 0.45), rgba(120, 0, 0, 0.6));
+    border-color: rgba(193, 18, 31, 0.75);
+    text-shadow: 0 1px 0 rgba(0, 0, 0, .35);
+}
+
 /* Дошка */
 .board {
     display: grid;
-    grid-template-columns: repeat(var(--cols), var(--cell));
     grid-auto-rows: var(--cell);
     gap: var(--gap);
     padding: 10px;
@@ -221,6 +239,104 @@ body {
         0 0 15px rgba(193, 18, 31, 0.45);
 }
 
+/* Стилі для повідомлення про результат */
+.message-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+
+    /* За замовчуванням приховано */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Показати оверлей */
+.message-overlay.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.message-box {
+    position: relative;
+    background: var(--blue-900);
+    border: 2px solid var(--panel-br);
+    border-radius: 16px;
+    padding: 30px 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .5);
+    max-width: 400px;
+    color: var(--beige);
+}
+
+.message-box h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.message-box p {
+    font-size: 1.1rem;
+    margin-bottom: 25px;
+    color: rgba(253, 240, 213, 0.8);
+}
+
+/* Кольори для заголовків перемоги/поразки */
+.message-box.win-color h2 {
+    color: var(--sky-500);
+    /* Блакитний для перемоги */
+}
+
+.message-box.lose-color h2 {
+    color: var(--red-600);
+    /* Червоний для поразки */
+}
+
+/* Стиль для кнопки "Грати знову" */
+#restart-message-btn {
+    padding: 10px 25px;
+    font-size: 1.2rem;
+    min-width: 190px;
+}
+
+/* Стилі для кнопки "Закрити" */
+.close-btn {
+    position: absolute;
+    top: 7px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: rgba(253, 240, 213, 0.6);
+    cursor: pointer;
+    line-height: 1;
+    padding: 5px;
+    transition: color 0.2s ease, transform 0.2s ease;
+    z-index: 1010;
+}
+
+.close-btn:hover {
+    color: var(--beige);
+    /* Яскравіший при наведенні */
+    transform: scale(1.1);
+    /* Невелике збільшення */
+}
+
+.close-btn:active {
+    color: var(--panel-br);
+    transform: scale(1.05);
+}
+
 /* Цифри */
 .n1 {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
@@ -239,25 +355,25 @@ body {
 
 .n4 {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-    color: #FDF0D5;
+    color: #590101;
 }
 
 .n5 {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-    color: #FDF0D5;
+    color: #430101;
 }
 
 .n6 {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-    color: #FDF0D5;
+    color: #330101;
 }
 
 .n7 {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-    color: #FDF0D5;
+    color: #330101;
 }
 
 .n8 {
     text-shadow: 0 1px 1px rgba(0, 0, 0, 0.25);
-    color: #FDF0D5;
+    color: #330101;
 }
