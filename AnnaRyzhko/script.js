@@ -317,13 +317,13 @@ function renderBoard(gameState) {
     boardElement.innerHTML = ''; // Очистити поле
     boardElement.style.gridTemplateColumns = `repeat(${gameState.cols}, var(--cell))`;
 
-    for (let r = 0; r < gameState.rows; r++) {
-        for (let c = 0; c < gameState.cols; c++) {
+    for (let row = 0; row < gameState.rows; row++) {
+        for (let col = 0; col < gameState.cols; col++) {
             const cellDiv = document.createElement('div');
             cellDiv.classList.add('cell');
-            cellDiv.dataset.row = r;
-            cellDiv.dataset.col = c;
-            cellDiv.dataset.index = r * gameState.cols + c;
+            cellDiv.dataset.row = row;
+            cellDiv.dataset.col = col;
+            cellDiv.dataset.index = row * gameState.cols + col;
 
             // Обробка подій кліків мишкою
             cellDiv.addEventListener('click', handleCellClick);
