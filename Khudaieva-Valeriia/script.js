@@ -20,16 +20,16 @@ function createCell(hasMine = false, neighborMines = 0, state = CellState.CLOSED
 
 function createEmptyBoard(rows, cols) {
     const board = [];
-    for (let r = 0; r < rows; r++) {
-        const row = [];
-        for (let c = 0; c < cols; c++) {
-            row.push({
+    for (let row = 0; row < rows; row++) {
+        const currentRow = [];
+        for (let col = 0; col < cols; col++) {
+            currentRow.push({
                 hasMine: false,
                 neighborMines: 0,
-                state: "closed"
+                state: CellState.CLOSED
             });
         }
-        board.push(row);
+        board.push(currentRow);
     }
     return board;
 }
