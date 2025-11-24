@@ -49,18 +49,18 @@ const makeCell = (row, col) => ({
 // Двовимірний масив поля
 function createBoard(all_rows = ROWS, all_cols = COLS) {
   const board = [];
-  for (let r = 0; r < all_rows; r++) {
+  for (let row = 0; row < all_rows; row++) {
     const rowArr = [];
-    for (let c = 0; c < all_cols; c++) {
-      rowArr.push(makeCell(r, c));
+    for (let col = 0; col < all_cols; col++) {
+      rowArr.push(makeCell(row, col));
     }
     board.push(rowArr);
   }
   return board;
 }
 
-const inBounds = (r, c, rows, cols) =>
-  r >= 0 && r < rows && c >= 0 && c < cols;
+const inBounds = (row, col, rows, cols) =>
+  row >= 0 && row < rows && col >= 0 && col < cols;
 
 // Розставити міни випадково
 function generateField(rows = ROWS, cols = COLS, mines = MINES) {
@@ -83,11 +83,11 @@ function generateField(rows = ROWS, cols = COLS, mines = MINES) {
 function countNeighbourMines(field, row, col) {
   const rows = field.length, cols = field[0].length;
   let count = 0;
-  for (let dr = -1; dr <= 1; dr++) {
-    for (let dc = -1; dc <= 1; dc++) {
-      if (!dr && !dc) continue;
-      const rr = row + dr, cc = col + dc;
-      if (inBounds(rr, cc, rows, cols) && field[rr][cc].mine) count++;
+  for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+    for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+      if (!deltaRow && !deltaCol) continue;
+      const neighbourRow = row + deltaRow, neighbourCol = col + deltaCol;
+      if (inBounds(neighbourRow, neighbourCol, rows, cols) && field[neighbourRow][neighbourCol].mine) count++;
     }
   }
   return count;
@@ -95,18 +95,18 @@ function countNeighbourMines(field, row, col) {
 
 // Записати adj для всіх клітинок
 function computeAllAdj(field) {
-  for (let r = 0; r < field.length; r++) {
-    for (let c = 0; c < field[0].length; c++) {
-      field[r][c].adj = countNeighbourMines(field, r, c);
+  for (let row = 0; row < field.length; row++) {
+    for (let col = 0; col < field[0].length; col++) {
+      field[row][col].adj = countNeighbourMines(field, row, col);
     }
   }
 }
 
 // Перевірка виграшу
 function isWin(board) {
-  for (let r = 0; r < board.length; r++) {
-    for (let c = 0; c < board[0].length; c++) {
-      const cell = board[r][c];
+  for (let row = 0; row < board.length; row++) {
+    for (let col = 0; col < board[0].length; col++) {
+      const cell = board[row][col];
       if (!cell.mine && cell.state !== CELL_STATE.UNCOVERED) return false;
     }
   }
@@ -141,22 +141,22 @@ function openCell(row, col) {
   // Flood fill (стек) для відкриття пустих клітинок
   const stack = [[row, col]];
   while (stack.length) {
-    const [r, c] = stack.pop();
-    const currentCell = board[r][c];
+    const [currentRow, currentCol] = stack.pop();
+    const currentCell = board[currentRow][currentCol];
 
     if (currentCell.state === CELL_STATE.UNCOVERED || currentCell.state === CELL_STATE.FLAGGED) continue;
 
     currentCell.state = CELL_STATE.UNCOVERED;
 
     if (currentCell.adj === 0) {
-      for (let dr = -1; dr <= 1; dr++) {
-        for (let dc = -1; dc <= 1; dc++) {
-          if (!dr && !dc) continue;
-          const rr = r + dr, cc = c + dc;
-          if (inBounds(rr, cc, game.rows, game.cols)) {
-            const neighbourCell = board[rr][cc];
+      for (let deltaRow = -1; deltaRow <= 1; deltaRow++) {
+        for (let deltaCol = -1; deltaCol <= 1; deltaCol++) {
+          if (!deltaRow && !deltaCol) continue;
+          const neighbourRow = currentRow + deltaRow, neighbourCol = currentCol + deltaCol;
+          if (inBounds(neighbourRow, neighbourCol, game.rows, game.cols)) {
+            const neighbourCell = board[neighbourRow][neighbourCol];
             if (neighbourCell.state === CELL_STATE.COVERED && !neighbourCell.mine) {
-              stack.push([rr, cc]);
+              stack.push([neighbourRow, neighbourCol]);
             }
           }
         }
@@ -201,11 +201,11 @@ function toggleFlag(row, col) {
 
 
 function countFlags(board = game.board) {
-  let n = 0;
-  for (let r = 0; r < board.length; r++)
-    for (let c = 0; c < board[0].length; c++)
-      if (board[r][c].state === CELL_STATE.FLAGGED) n++;
-  return n;
+  let flagCount = 0;
+  for (let row = 0; row < board.length; row++)
+    for (let col = 0; col < board[0].length; col++)
+      if (board[row][col].state === CELL_STATE.FLAGGED) flagCount++;
+  return flagCount;
 }
 
 // ===============================
@@ -362,16 +362,16 @@ function renderBoard() {
   if (!boardEl) return;
   boardEl.innerHTML = '';
 
-  for (let r = 0; r < game.rows; r++) {
+  for (let row = 0; row < game.rows; row++) {
     const rowDiv = document.createElement('div');
     rowDiv.className = 'game-board-wrapper__row';
 
-    for (let c = 0; c < game.cols; c++) {
-      const cell = game.board[r][c];
+    for (let col = 0; col < game.cols; col++) {
+      const cell = game.board[row][col];
       const cellDiv = document.createElement('div');
       cellDiv.classList.add('game-board__cell');
-      cellDiv.dataset.row = String(r);
-      cellDiv.dataset.col = String(c);
+      cellDiv.dataset.row = String(row);
+      cellDiv.dataset.col = String(col);
 
       const isFlagged = cell.state === CELL_STATE.FLAGGED;
       const isCovered = cell.state === CELL_STATE.COVERED;
@@ -380,8 +380,8 @@ function renderBoard() {
         // програш: показуємо всі не-помічені міни
         cellDiv.classList.add('open-cell', 'mine-cell');
         if (game.explodedCell &&
-            game.explodedCell.row === r &&
-            game.explodedCell.col === c) {
+            game.explodedCell.row === row &&
+            game.explodedCell.col === col) {
           cellDiv.classList.add('exploded');
         }
       } else if (isFlagged) {
@@ -396,8 +396,8 @@ function renderBoard() {
         if (cell.mine) {
           cellDiv.classList.add('mine-cell');
           if (game.explodedCell &&
-              game.explodedCell.row === r &&
-              game.explodedCell.col === c &&
+              game.explodedCell.row === row &&
+              game.explodedCell.col === col &&
               game.status === GAME_STATE.LOSE) {
             cellDiv.classList.add('exploded');
           }
