@@ -10,6 +10,7 @@ body {
   }
   
   .panel {
+    position: relative;
     background: #b36bff;
     border: 4px solid #7a33ff;
     box-shadow: inset 2px 2px #c8a8ff, inset -2px -2px #5a0099, 0 0 15px #ad6bff;
@@ -46,7 +47,6 @@ body {
     transform: scale(1.05);
   }
   
-  /* Ігрове поле */
   .board {
     display: grid;
     grid-template-columns: repeat(11, 35px);
@@ -58,7 +58,6 @@ body {
     border-radius: 15px;
   }
   
-  /* Клітинки */
   .cell {
     width: 35px;
     height: 35px;
@@ -71,46 +70,70 @@ body {
     transition: background 0.2s, transform 0.1s;
   }
   
-  /* Початковий стан — зелений */
   .cell.closed {
     background: #66ff99;
     box-shadow: inset -2px -2px #3bb56f, inset 2px 2px #9affc1;
   }
   
-  /* Відкрита — фіолетовий відтінок */
   .cell.open {
     background: linear-gradient(135deg, #a866ff, #7a33ff);
     color: #fff;
     box-shadow: inset -2px -2px #5a0099, inset 2px 2px #c8a8ff;
   }
   
-  /* Міна — рожевий */
   .cell.mine {
     background: #ff8ad6;
     color: #660033;
     box-shadow: inset 0 0 10px #ff3ba2;
   }
   
-  /* Вибух — яскраво-рожевий + пульсація */
   .cell.exploded {
     background: #ff4bbd;
     color: #fff;
     box-shadow: 0 0 15px #ff1e8a, inset 0 0 10px #ff0080;
     animation: pulse 0.8s infinite alternate;
   }
-  
-  /* Прапорець — зелено-фіолетовий */
   .cell.flag {
-    background: linear-gradient(135deg, #8fffde, #66ff99);
-    box-shadow: inset -2px -2px #3b9070, inset 2px 2px #b2ffe0;
+    background-color: #4b0082; 
+    color: inherit;  
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  
-  /* Анімація вибуху */
+  .status-message-overlay {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); 
+    top: 200px; 
+    width: 300px;
+    padding: 15px 30px;
+    border-radius: 12px;
+    font-size: 28px;
+    font-weight: bold;
+    text-align: center;
+    color: #fff;
+    cursor: pointer; 
+    z-index: 10; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    transition: opacity 0.3s, transform 0.3s;
+    display: none; 
+  }
+  .status-message-overlay.win-message {
+    display: block; 
+    background: linear-gradient(45deg, #4CAF50, #79ff7d); 
+    border: 3px solid #38783a;
+  }
+  .status-message-overlay.lose-message {
+    display: block; 
+    background: linear-gradient(45deg, #ff5fc9, #ff1e8a);
+    border: 3px solid #9c2c24;
+  } 
+
   @keyframes pulse {
     from { box-shadow: 0 0 8px #ff5fc9; }
     to   { box-shadow: 0 0 20px #ff1e8a; }
   }
-  
  
   .n1 { color: #bafff1; }
   .n2 { color: #a4ffb3; }
