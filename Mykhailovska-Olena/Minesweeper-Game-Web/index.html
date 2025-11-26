@@ -13,11 +13,11 @@
     <main>
       <div class="time">
         <img src="photos/clock.svg" alt="time">
-        <div class="time-text">1:46</div>
+        <div class="time-text" id="timer">0</div>
       </div>
 
       <div class="new-game">
-        <button>
+        <button id="restart-button">
           <img src="photos/icon_reload.svg" alt="icon" class="btn-icon">
           <span class="btn-text">New Game</span>
         </button>
@@ -27,12 +27,12 @@
         <div class="difficulty-select">
           <button class="select-btn">
             <span class="selected">Easy</span>
-            <span class="arrow"><img src="/photos/weui_arrow-filled.svg" alt=""></span>
+            <span class="arrow"><img src="photos/weui_arrow-filled.svg" alt=""></span>
           </button>
           <ul class="options">
-            <li class="active">Easy</li>
-            <li>Medium</li>
-            <li>Hard</li>
+            <li class="active" data-rows="9" data-cols="9" data-mines="10">Easy</li>
+            <li data-rows="16" data-cols="16" data-mines="40">Medium</li>
+            <li data-rows="16" data-cols="30" data-mines="99">Hard</li>
           </ul>
         </div>
       
@@ -51,17 +51,17 @@
               value="5"
             />
           </div>
-          <span>100%</span>
+          <span id="scale-value">100%</span>
       </div>
       
         <div>
-          <button>Reveal Safe</button>
+          <button id="reveal-safe">Reveal Safe</button>
         </div>
       </div>
       
       
       <div class="indicators">
-        <div>💣 3</div>
+        <div>💣 <span id="mine-count">0</span></div>
         <div>🥳 Streak: 64</div>
       </div>
 
@@ -69,105 +69,9 @@
       <div class="game-wrapper">
         <div class="outer-border">
           <div class="inner-bg">
-            <div class="board" aria-hidden="true">
-              <!-- Ряд 1 -->
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell num1">1</div>
-              <div class="cell num2">2</div>
-              <div class="cell num3">3</div>
-              <div class="cell"></div>
-              <div class="cell flag">🚩</div>
-              <div class="cell bomb">💣</div>
-              <div class="cell open"></div>
-    
-              <!-- Ряд 2 -->
-              <div class="cell"></div>
-              <div class="cell num1">1</div>
-              <div class="cell open"></div>
-              <div class="cell num4">4</div>
-              <div class="cell num2">2</div>
-              <div class="cell num1">1</div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-    
-              <!-- Ряд 3 -->
-              <div class="cell num2">2</div>
-              <div class="cell num3">3</div>
-              <div class="cell"></div>
-              <div class="cell flag">🚩</div>
-              <div class="cell"></div>
-              <div class="cell bomb">💣</div>
-              <div class="cell num1">1</div>
-              <div class="cell open"></div>
-              <div class="cell"></div>
-    
-              <!-- Ряд 4 -->
-              <div class="cell open"></div>
-              <div class="cell open"></div>
-              <div class="cell num1">1</div>
-              <div class="cell num2">2</div>
-              <div class="cell num3">3</div>
-              <div class="cell num4">4</div>
-              <div class="cell num5">5</div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-    
-              <!-- Ряд 5 -->
-              <div class="cell"></div>
-              <div class="cell flag">🚩</div>
-              <div class="cell"></div>
-              <div class="cell bomb">💣</div>
-              <div class="cell"></div>
-              <div class="cell num6">6</div>
-              <div class="cell num2">2</div>
-              <div class="cell num1">1</div>
-              <div class="cell open"></div>
-    
-              <!-- Ряд 6 -->
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell num7">7</div>
-              <div class="cell num3">3</div>
-              <div class="cell num2">2</div>
-              <div class="cell"></div>
-              <div class="cell flag">🚩</div>
-              <div class="cell"></div>
-    
-              <!-- Ряд 7 -->
-              <div class="cell bomb">💣</div>
-              <div class="cell"></div>
-              <div class="cell num1">1</div>
-              <div class="cell open"></div>
-              <div class="cell open"></div>
-              <div class="cell num4">4</div>
-              <div class="cell num2">2</div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-    
-              <!-- Ряд 8 -->
-              <div class="cell"></div>
-              <div class="cell num5">5</div>
-              <div class="cell num6">6</div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell num8">8</div>
-              <div class="cell num1">1</div>
-              <div class="cell flag">🚩</div>
-    
-              <!-- Ряд 9 -->
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
-              <div class="cell"></div>
+            <div class="board" aria-hidden="false">
+              <!-- Динамическое поле -->
+              <div id="game-board" class="game-board"></div>
             </div>
           </div>
         </div>

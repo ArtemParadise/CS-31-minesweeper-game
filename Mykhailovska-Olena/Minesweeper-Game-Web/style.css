@@ -1,11 +1,12 @@
 :root {
   --slider-size: 15px;
+  --cell-size: 35px; /* default cell size */
 }
 
 body {
     font-family: Arial, sans-serif;
     background: #F4F7FA;
-    color: #eee;
+    color: #111; /* changed to dark for readability on light background */
     text-align: center;
   }
 
@@ -119,7 +120,6 @@ div.parent {
 }
 
 
-/* Кнопка Reveal Safe */
 .parent > div:last-child button {
   padding: 10px 20px;
   border-radius: 6px;
@@ -205,34 +205,41 @@ div.parent {
 }
 
 /* 3. Сетка поля */
+/* .board оставим обёрткой, реальная сетка — #game-board */
 .board {
+  display: block;
+  padding: 0;
+  background: #CAD5E2;
+}
+
+/* Класс game-board: динамическая сетка, управляемая JS */
+#game-board {
   display: grid;
-  grid-template-columns: repeat(9, 35px);
-  grid-template-rows: repeat(9, 35px);
-  gap: 2px;                  
-  background: #CAD5E2;        /* фон для "бордеров" */
+  grid-template-columns: repeat(9, var(--cell-size, 35px));
+  grid-auto-rows: var(--cell-size, 35px);
+  gap: 2px;
+  justify-content: center;
+  align-items: start;
 }
 
 /* Клетки */
 .cell {
-  width: 35px;
-  height: 35px;
+  width: var(--cell-size, 35px);
+  height: var(--cell-size, 35px);
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
   font-size: 18px;
-  /* background: #D5DEE9;           закрытая клетка */
   background: linear-gradient(to bottom right, #E1E7F0, #CBD6E2);
-
-  cursor: default;
+  cursor: pointer;
   border-radius: 2px;
 }
 
 /* открытые пустые */
 .cell.open {
-  /* background: #F3F4F6; */
   background: linear-gradient(to bottom, #ECEDEF, #F3F4F6);
+  cursor: default;
 }
 
 /* цифры */
@@ -273,3 +280,5 @@ div.parent {
   margin-bottom: 10px;
   color: #314158;
 }
+
+/* --------- End of CSS --------- */
