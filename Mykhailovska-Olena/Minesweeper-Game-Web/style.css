@@ -55,15 +55,12 @@ body {
     height: 16px;
   }
   
-  .btn-text {
-  }
 
-/* Родительский контейнер */
 div.parent {
-  display: flex;              /* делаем все в ряд */
-  justify-content: center;    /* по центру горизонтально */
-  align-items: center;        /* по центру вертикально */
-  gap: 20px;                  /* расстояние между блоками */
+  display: flex;            
+  justify-content: center;    
+  align-items: center;        
+  gap: 20px;                 
 }
 
 /* Селект со сложностями */
@@ -140,14 +137,12 @@ div.parent {
 }
 
 
-/* Если нужно, чтобы кнопка и слайдер были чуть красивее */
 .scale {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-/* Слайдер как у тебя */
 .slider {
   -webkit-appearance: none;
   appearance: none;
@@ -195,11 +190,11 @@ div.parent {
 
 /* 1. Внешняя белая рамка */
 .outer-border {
-  background: white;        /* почти белая */
-  border: 1px solid #90A1B9;     /* тёмно-серая рамка */
-  padding: 10px;               /* толщина белой рамки */
+  background: white;    
+  border: 1px solid #90A1B9;     
+  padding: 10px;               
   border-radius: 10px;
-  display: inline-block;      /* чтобы под размер поля */
+  display: inline-block;    
 }
 
 /* 2. Внутренняя подложка */
@@ -214,7 +209,7 @@ div.parent {
   display: grid;
   grid-template-columns: repeat(9, 35px);
   grid-template-rows: repeat(9, 35px);
-  gap: 2px;                   /* расстояние между клетками = фон подложки */
+  gap: 2px;                  
   background: #CAD5E2;        /* фон для "бордеров" */
 }
 
@@ -262,19 +257,19 @@ div.parent {
 }
 
 .controls {
-  text-align: center; /* выравнивание всего текста по центру */
+  text-align: center; 
   margin: 20px auto;
-  max-width: 600px; /* опционально, чтобы блок не растягивался слишком сильно */
+  max-width: 600px; 
   font-family: sans-serif;
-  line-height: 1.5; /* чтобы строки не слипались */
+  line-height: 1.5; 
   color: #314158;
   font-size: 15px;
 }
 
 .controls-title {
-  display: block;    /* чтобы заголовок был на отдельной строке */
-  font-weight: 900; /* жирный */
-  font-size: 17px;   /* можно увеличить размер */
+  display: block;   
+  font-weight: 900;
+  font-size: 17px;   
   margin-bottom: 10px;
   color: #314158;
 }
