@@ -47,6 +47,12 @@ const gameBoardContainer = document.getElementById('game-board');
 const restartButton = document.getElementById('restart-button');
 const revealSafeButton = document.getElementById('reveal-safe');
 
+// ADDED FOR LAB: Game Status Message Element
+const gameStatusMessage = document.getElementById('game-status-message');
+
+// ADDED FOR LAB: Streak Counter Element
+const streakCountDisplay = document.getElementById('streak-count');
+
 // --- UI helpers ---
 function setCellSizeByScale(value) {
   const base = 35;
@@ -92,6 +98,35 @@ document.addEventListener('click', (e) => {
     options.style.display = 'none';
   }
 });
+
+// --- UI helpers ---
+// ADDED FOR LAB: Update Flag Count Display
+function updateFlagCountDisplay() {
+  if (!game.gameState) return;
+  let flagsPlaced = 0;
+  for (let i = 0; i < game.gameState.rows; i++) {
+    for (let j = 0; j < game.gameState.cols; j++) {
+      if (game.board[i][j].state === 'flagged') {
+        flagsPlaced++;
+      }
+    }
+  }
+  mineCountDisplay.textContent = game.gameState.mineCount - flagsPlaced;
+}
+
+// ADDED FOR LAB: Streak Logic
+let streak = 0;
+
+function updateStreak(gameWon) {
+  if (gameWon) {
+    streak++;
+  } else {
+    streak = 0;
+  }
+  if (streakCountDisplay) {
+    streakCountDisplay.textContent = streak;
+  }
+}
 
 // --- Core functions ---
 function generateField(rows, cols, mines) {
@@ -169,6 +204,9 @@ function openCell(row, col) {
       gameState.currentState = "lost";
       revealAllMines();
       updateGameInfoDisplay();
+      gameStatusMessage.textContent = 'Game Over! You hit a mine.';
+      gameStatusMessage.classList.add('lost');
+      updateStreak(false); // ADDED FOR LAB: Update streak on loss
       console.log("Game State: Lost - You hit a mine at (", row, ",", col, ")!");
       return;
   }
@@ -194,6 +232,9 @@ function openCell(row, col) {
       gameState.currentState = "won";
       revealAllMines(true);
       updateGameInfoDisplay();
+      gameStatusMessage.textContent = 'Congratulations! You won!';
+      gameStatusMessage.classList.add('won');
+      updateStreak(true); // ADDED FOR LAB: Update streak on win
       console.log("Game State: Won!");
   }
 
@@ -214,6 +255,7 @@ function toggleFlag(row, col) {
 
   renderBoard();
   updateGameInfoDisplay();
+  updateFlagCountDisplay(); // ADDED FOR LAB: Update flag count
   console.log("Cell (", row, ",", col, ") flag state updated to:", cell.state);
 }
 
@@ -253,19 +295,31 @@ function stopTimer() {
 function updateGameInfoDisplay() {
   const { gameState } = game;
   if (!gameState) return;
-  mineCountDisplay.textContent = gameState.mineCount;
+  mineCountDisplay.textContent = gameState.mineCount; // This line is updated in updateFlagCountDisplay now.
   const statusEl = document.getElementById('game-status');
   if (statusEl) statusEl.textContent = gameState.currentState;
   if (timerDisplay) timerDisplay.textContent = gameState.timer;
+
+  // ADDED FOR LAB: Game end logic
   if (gameState.currentState === "won") {
       stopTimer();
       if (statusEl) statusEl.style.color = "green";
+      gameBoardContainer.removeEventListener('click', handleClick);
+      gameBoardContainer.removeEventListener('contextmenu', handleContextMenu);
   } else if (gameState.currentState === "lost") {
       stopTimer();
       if (statusEl) statusEl.style.color = "red";
+      gameBoardContainer.removeEventListener('click', handleClick);
+      gameBoardContainer.removeEventListener('contextmenu', handleContextMenu);
   } else {
       if (statusEl) statusEl.style.color = "#111";
+      // ADDED FOR LAB: Re-add event listeners if game is in progress
+      gameBoardContainer.removeEventListener('click', handleClick); // Remove existing to prevent duplicates
+      gameBoardContainer.removeEventListener('contextmenu', handleContextMenu); // Remove existing to prevent duplicates
+      gameBoardContainer.addEventListener('click', handleClick);
+      gameBoardContainer.addEventListener('contextmenu', handleContextMenu);
   }
+  updateFlagCountDisplay(); // ADDED FOR LAB: Call here to update flags
 }
 
 // Render board
@@ -323,30 +377,43 @@ function initializeGame(rows = 9, cols = 9, mines = 10) {
     setCellSizeByScale(scaleSlider ? scaleSlider.value : 5);
     renderBoard();
     updateGameInfoDisplay();
+    // ADDED FOR LAB: Reset game status message
+    if (gameStatusMessage) {
+      gameStatusMessage.textContent = '';
+      gameStatusMessage.classList.remove('won', 'lost');
+    }
+    // ADDED FOR LAB: Initialize streak display
+    if (streakCountDisplay) {
+      streakCountDisplay.textContent = streak;
+    }
 }
 
 // Start with default easy
 initializeGame(9, 9, 10);
 
 // Events
-gameBoardContainer.addEventListener('click', (event) => {
-    const cellElement = event.target.closest('.cell');
-    if (!cellElement) return;
-    const row = parseInt(cellElement.dataset.row, 10);
-    const col = parseInt(cellElement.dataset.col, 10);
-    if (isNaN(row) || isNaN(col)) return;
-    openCell(row, col);
-});
+// ADDED FOR LAB: Event handler functions to easily add/remove
+function handleClick(event) {
+  const cellElement = event.target.closest('.cell');
+  if (!cellElement) return;
+  const row = parseInt(cellElement.dataset.row, 10);
+  const col = parseInt(cellElement.dataset.col, 10);
+  if (isNaN(row) || isNaN(col)) return;
+  openCell(row, col);
+}
 
-gameBoardContainer.addEventListener('contextmenu', (event) => {
-    event.preventDefault();
-    const cellElement = event.target.closest('.cell');
-    if (!cellElement) return;
-    const row = parseInt(cellElement.dataset.row, 10);
-    const col = parseInt(cellElement.dataset.col, 10);
-    if (isNaN(row) || isNaN(col)) return;
-    toggleFlag(row, col);
-});
+function handleContextMenu(event) {
+  event.preventDefault();
+  const cellElement = event.target.closest('.cell');
+  if (!cellElement) return;
+  const row = parseInt(cellElement.dataset.row, 10);
+  const col = parseInt(cellElement.dataset.col, 10);
+  if (isNaN(row) || isNaN(col)) return;
+  toggleFlag(row, col);
+}
+
+gameBoardContainer.addEventListener('click', handleClick);
+gameBoardContainer.addEventListener('contextmenu', handleContextMenu);
 
 // Spacebar + hover flagging
 let hoveredCell = null;

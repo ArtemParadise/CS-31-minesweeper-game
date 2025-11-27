@@ -281,4 +281,24 @@ div.parent {
   color: #314158;
 }
 
+/* ADDED FOR LAB: Game Status Message Styling */
+.game-status-message {
+  font-size: 2em;
+  font-weight: bold;
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.game-status-message.won {
+  color: white;
+  background-color: green;
+}
+
+.game-status-message.lost {
+  color: white;
+  background-color: red;
+}
+
 /* --------- End of CSS --------- */
