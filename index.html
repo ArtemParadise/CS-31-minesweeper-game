@@ -3,72 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minesweeper Game</title>
+    <title>Minesweeper</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Minesweeper Game</h1>
-    <div class="game-board-wrapper">
-        <header class="game-board-header">
-            <div class="game-board-header__flags_left">007</div>
-            <button class="start-button">Start</button>
-            <div class="game-board-header__timer">00:00</div>
-        </header>
-        <div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell mine-cell"></div>
+    <div class="game-container">
+        <h1>Minesweeper</h1>
+        
+        <div class="game-info">
+            <div class="flag-counter">
+                <span>Flags: </span>
+                <span id="flag-count">10</span>
             </div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell mine-cell"></div>
-            </div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell mine-cell"></div>
-            </div>
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell mine-cell"></div>
-                <div class="game-board__cell flagged-cell"></div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell mine-cell"></div>
+            
+            <button class="start-button" id="start-btn">Start Game</button>
+            
+            <div class="timer">
+                <span>Time: </span>
+                <span id="time">000</span>
             </div>
         </div>
+        
+        <div class="game-field" id="game-field">
+            <!-- Example cells showing different states -->
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell opened">1</div>
+            <div class="cell opened">2</div>
+            <div class="cell opened"></div>
+            <div class="cell opened"></div>
+            <div class="cell opened">1</div>
+            <div class="cell closed"></div>
+            <div class="cell flagged">🚩</div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell opened">1</div>
+            <div class="cell opened"></div>
+            <div class="cell opened"></div>
+            <div class="cell opened"></div>
+            <div class="cell opened">1</div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell opened">1</div>
+            <div class="cell opened"></div>
+            <div class="cell opened"></div>
+            <div class="cell opened"></div>
+            <div class="cell opened">1</div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell opened">1</div>
+            <div class="cell opened">1</div>
+            <div class="cell opened">1</div>
+            <div class="cell opened">1</div>
+            <div class="cell opened">1</div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell mine">💣</div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+            <div class="cell closed"></div>
+        </div>
     </div>
-
-    <!-- <div id="game-board">
-        hello
-    </div> -->
-    <!-- <script src="script.js"></script> -->
+    
+    <script src="script.js"></script>
 </body>
 </html>
