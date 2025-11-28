@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Minesweeper UI</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="game-container">
+    <div class="top-panel">
+        <div class="counter" id="flags">010</div>
+        <button class="reset-btn" id="startBtn"></button>
+        <div class="counter" id="timer">000</div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+</div>
+
+<script>
+    const grid = document.getElementById('grid');
+    for (let i = 0; i < 16 * 16; i++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell closed';
+        grid.appendChild(cell);
+    }
+</script>
+
+<script src="main.js"></script>
+</body>
+</html>

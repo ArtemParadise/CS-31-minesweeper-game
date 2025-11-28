@@ -1,0 +1,100 @@
+body {
+    background: #828282;
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+    font-family: Tahoma, sans-serif;
+}
+
+.game-container {
+    background: #c0c0c0;
+    border: 3px solid #ffffff;
+    box-shadow: inset -2px -2px 0 #111, inset 2px 2px 0 #fff;
+    padding: 10px;
+}
+
+/* Верхня панель */
+.top-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px;
+    background: #c0c0c0;
+    border: 3px solid #fff;
+    box-shadow: inset -2px -2px 0 #111, inset 2px 2px 0 #fff;
+}
+
+.counter {
+    width: 50px;
+    height: 30px;
+    background: black;
+    color: red;
+    font-size: 28px;
+    text-align: center;
+    line-height: 30px;
+    font-family: "Digital-7", monospace;
+    border: 2px solid #333;
+}
+
+.reset-btn {
+    width: 32px;
+    height: 32px;
+    background-image: url("./src/reset_button.png");
+    background-size: cover;
+    border: 2px solid #fff;
+    box-shadow: inset -2px -2px 0 #111, inset 2px 2px 0 #fff;
+    cursor: pointer;
+}
+
+/* Сітка */
+.grid {
+    margin-top: 10px;
+    background: #c0c0c0;
+    border: 3px solid #fff;
+    box-shadow: inset -2px -2px 0 #111, inset 2px 2px 0 #fff;
+    display: grid;
+    grid-template-columns: repeat(16, 20px);
+    grid-template-rows: repeat(16, 20px);
+    gap: 0;
+}
+
+/* Клітинки */
+.cell {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #808080;
+    box-shadow: inset -2px -2px 0 #fff, inset 2px 2px 0 #808080;
+    background: #c0c0c0;
+}
+
+/* Закрита клітинка */
+.closed {
+    background: #c0c0c0;
+}
+
+/* Відкрита клітинка */
+.open {
+    background: #e0e0e0;
+    box-shadow: none;
+    border: 1px solid #bdbdbd;
+}
+
+/* Міна */
+.mine {
+    background: #e0e0e0 url("./src/mine.png") center/16px no-repeat;
+}
+
+/* Міна, на яку натиснули */
+.mine-clicked {
+    background: red url("/src/red_mine.png") center/16px no-repeat;
+}
+
+/* Прапорець */
+.flag {
+    background: #c0c0c0 url("/src/flag.png") center/16px no-repeat;
+}
+
+/* Прапор без міни (помилка) */
+.no-mine-flag {
+    background: #e0e0e0 url("/src/red_flag.png") center/16px no-repeat;
+}
