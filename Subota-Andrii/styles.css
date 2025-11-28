@@ -1,3 +1,4 @@
+/* Стилі сторінки та центрування гри */
 body {
     background: #828282;
     display: flex;
@@ -6,6 +7,7 @@ body {
     font-family: Tahoma, sans-serif;
 }
 
+/* Контейнер всієї гри */
 .game-container {
     background: #c0c0c0;
     border: 3px solid #ffffff;
@@ -13,7 +15,7 @@ body {
     padding: 10px;
 }
 
-/* Верхня панель */
+/* Верхня панель (лічильник, кнопка рестарту, таймер) */
 .top-panel {
     display: flex;
     justify-content: space-between;
@@ -24,6 +26,7 @@ body {
     box-shadow: inset -2px -2px 0 #111, inset 2px 2px 0 #fff;
 }
 
+/* Лічильник цифр (мін, часу) */
 .counter {
     width: 50px;
     height: 30px;
@@ -36,6 +39,7 @@ body {
     border: 2px solid #333;
 }
 
+/* Кнопка перезапуску гри */
 .reset-btn {
     width: 32px;
     height: 32px;
@@ -46,7 +50,7 @@ body {
     cursor: pointer;
 }
 
-/* Сітка */
+/* Ігрове поле (сітка Minesweeper) */
 .grid {
     margin-top: 10px;
     background: #c0c0c0;
@@ -58,7 +62,7 @@ body {
     gap: 0;
 }
 
-/* Клітинки */
+/* Базова стилізація клітинки */
 .cell {
     width: 20px;
     height: 20px;
@@ -79,17 +83,17 @@ body {
     border: 1px solid #bdbdbd;
 }
 
-/* Міна */
+/* Клітинка з міною */
 .mine {
     background: #e0e0e0 url("./src/mine.png") center/16px no-repeat;
 }
 
-/* Міна, на яку натиснули */
+/* Вибухнута міна (клік по міні) */
 .mine-clicked {
     background: red url("/src/red_mine.png") center/16px no-repeat;
 }
 
-/* Прапорець */
+/* Клітинка з прапорцем */
 .flag {
     background: #c0c0c0 url("/src/flag.png") center/16px no-repeat;
 }
