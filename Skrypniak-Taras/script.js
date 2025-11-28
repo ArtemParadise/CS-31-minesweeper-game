@@ -79,13 +79,13 @@ const leftClickListener = (event) => {
     const row = parseInt(cell.dataset.row);
     const col = parseInt(cell.dataset.col);
 
-    const revealCell = (r, c) => {
-        const currentCell = document.querySelector(`.cell[data-row="${r}"][data-col="${c}"]`);
+    const revealCell = (row, col) => {
+        const currentCell = document.querySelector(`.cell[data-row="${row}"][data-col="${col}"]`);
         if (!currentCell || currentCell.classList.contains('revealed') || currentCell.classList.contains('flag'))
             return;
 
         currentCell.classList.add('revealed');
-        const value = grid[r][c];
+        const value = grid[row][c];
 
         if (value === -1) return endGame(false);
 
@@ -93,8 +93,8 @@ const leftClickListener = (event) => {
 
         if (value > 0) return;
 
-        for (const [dr, dc] of directions) {
-            const nr = r + dr, nc = c + dc;
+        for (const [drow, dcol] of directions) {
+            const nr = row + drow, nc = col + dcol;
             if (inBounds(nr, nc)) revealCell(nr, nc);
         }
     };
