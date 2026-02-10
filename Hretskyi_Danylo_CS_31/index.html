@@ -9,171 +9,52 @@
 
     <h1>Cactus`sweeper Game</h1>
     <div id="game-board">
-    <div class="game-board-wrapper">
+      <div class="game-board-wrapper">
         <header class="game-board-header">
 
-            <div class="game-board-header__left" role="group" aria-label="Counters">
-              <div id="flagsLeft" class="counter game-board-header__flags_left" title="Flags left">🚩 010</div>
-              <div id="timer" class="counter game-board-header__timer" title="Elapsed time">000</div>
-              <button id="resetBtn" class="reset" title="New game / Reset" aria-live="polite">NEW GAME</button>
-            </div>
-          
-            <div class="game-board-header__center" role="group" aria-label="Primary controls">
-              
+          <!-- Ліва частина: прапорці + таймер + кнопка -->
+          <div class="game-board-header__left" role="group" aria-label="Counters">
+            <div id="flagsLeft"
+                 class="counter game-board-header__flags_left"
+                 title="Flags left">🚩 010</div>
 
-            </div>
-          
-            <div class="game-board-header__right" role="group" aria-label="Settings and timer">
+            <div id="timer"
+                 class="counter game-board-header__timer"
+                 title="Elapsed time">000</div>
 
-          
-              <label class="sr-only" for="difficulty">Difficulty</label>
-              <select id="difficulty" class="select difficulty" title="Difficulty">
-                <option value="beginner">Beginner (9×9, 10)</option>
-                <option value="intermediate">Intermediate (16×16, 40)</option>
-                <option value="expert">Expert (30×16, 99)</option>
-                <option value="custom">Custom…</option>
-              </select>
-          
-              <button id="pauseBtn" class="icon-btn" aria-pressed="false" title="Pause / Resume">⏸</button>
-              <button id="hintBtn" class="icon-btn" title="Hint (auto-reveal a safe cell)">💡</button>
-              <button id="helpBtn" class="icon-btn" title="How to play">❓</button>
+            <button id="resetBtn"
+                    class="reset state-idle"
+                    title="New game / Reset"
+                    aria-live="polite">
+              NEW GAME
+            </button>
+          </div>
 
-            </div>
+          <!-- Центр (поки порожній, можна потім додати ще щось) -->
+          <div class="game-board-header__center" role="group" aria-label="Primary controls">
+          </div>
+
+          <!-- Права частина: складність + додаткові кнопки -->
+          <div class="game-board-header__right" role="group" aria-label="Settings and timer">
+            <label class="sr-only" for="difficulty">Difficulty</label>
+            <select id="difficulty" class="select difficulty" title="Difficulty">
+              <option value="beginner">Beginner (9×9, 10)</option>
+              <option value="intermediate">Intermediate (16×16, 40)</option>
+              <option value="expert">Expert (30×16, 99)</option>
+              <option value="custom">Custom…</option>
+            </select>
+
+            <button id="pauseBtn" class="icon-btn" aria-pressed="false" title="Pause / Resume">⏸</button>
+            <button id="hintBtn" class="icon-btn" title="Hint (auto-reveal a safe cell)">💡</button>
+            <button id="helpBtn" class="icon-btn" title="How to play">❓</button>
+          </div>
         </header>
-          
-        <div class="game-board-wrapper__content">
-            <!-- 1 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell number-2">2</div>
-                <div class="game-board__cell open-cell number-3">3</div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell flagged-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell mine-cell flagged-cell "></div>
-                <div class="game-board__cell open-cell mine-cell"></div>
-                <div class="game-board__cell open-cell mine-cell exploded"></div>
-            </div>
-            <!-- 2 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell "></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-            </div>
-            <!-- 3 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-            </div>
-            <!-- 4 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell mine-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell number-1">1</div>
-                <div class="game-board__cell open-cell "></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-            </div>
-            <!-- 5 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell mine-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell pony-cell"></div>
-                <div class="game-board__cell open-cell "></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-                <div class="game-board__cell open-cell"></div>
-            </div>
-            <!-- 6 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell mine-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-            </div>
-            <!-- 7 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-            </div>
-            <!-- 8 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-            </div>
-            <!-- 9 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-            </div>
-            <!-- 10 row -->
-            <div class="game-board-wrapper__row">
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-                <div class="game-board__cell closed-cell"></div>
-            </div>
-        </div>
+
+        <!-- УВАГА: контент поля тепер порожній – JS сам намалює клітинки -->
+        <div class="game-board-wrapper__content"></div>
+      </div>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>
